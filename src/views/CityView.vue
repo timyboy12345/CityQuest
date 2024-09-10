@@ -35,13 +35,13 @@
   <div v-else-if="cityStore.city" class="w-screen h-screen">
     <MapComponent
         @map-click="handleMapClick($event.lat, $event.lng)"
-        v-if="cityStore.step && cityStore.step.type === 'location'" :center="center" :zoom="zoom"
-        :target-location="cityStore.step.target"
+        v-if="cityStore.step && cityStore.step.collection === 'step_poly'"
+        :center="center"
+        :zoom="zoom"
         :own-location="ownLocation"
-        :target-radius="cityStore.step.target.radius ?? 10"
     ></MapComponent>
-    <TextComponent v-else-if="cityStore.step && cityStore.step.type === 'text'"></TextComponent>
-    <QuestionComponent v-else-if="cityStore.step && cityStore.step.type === 'question'"></QuestionComponent>
+    <TextComponent v-else-if="cityStore.step && cityStore.step.collection === 'step_text'"></TextComponent>
+    <QuestionComponent v-else-if="cityStore.step && cityStore.step.collection === 'step_question'"></QuestionComponent>
     <div v-else>ONBEKENDE STAP</div>
 
     <!--    <div class="absolute top-0 left-0 z-10 w-full">-->
@@ -81,7 +81,7 @@
       </div>
     </Transition>
 
-    <button v-if="devMode" class="hover:underline absolute left-4 bottom-4 text-xs opacity-50"
+    <button v-if="devMode && cityStore.stepNumber !== 0" class="hover:underline absolute left-4 bottom-4 text-xs opacity-50"
             type="button"
             @click="cityStore.previousStep()">
       Stap Terug
@@ -103,6 +103,7 @@ import MapComponent from "@/components/MapComponent.vue";
 import TextComponent from "@/components/TextComponent.vue";
 import {pointInCircle, pointInPoly} from "@/scripts/geoHelpers.js";
 import QuestionComponent from "@/components/QuestionComponent.vue";
+import {fetchQuest, fetchQuests} from "@/assets/city-service.js";
 
 const supportsGeoLocation = ref("geolocation" in navigator);
 // 0 = Not clear, 1 = Success, 2 = No permission
@@ -130,12 +131,24 @@ onBeforeRouteLeave(() => {
   }
 })
 
-if (!cityStore.hasCity(route.params.id)) {
-  console.error("CITY NOT FOUND");
-  router.push('/');
-} else {
-  cityStore.selectCity(route.params.id);
+function setup() {
+  const q = fetchQuests()
+      .then((d) => cityStore.setCities(d.data))
+      .catch((e) => {
+        console.error(e);
+      });
+
+  const c = fetchQuest(route.params.id)
+      .then((d) => cityStore.setCity(d.data))
+      .catch((e) => console.error(e));
 }
+
+// if (!cityStore.hasCity(route.params.id)) {
+//   console.error("CITY NOT FOUND");
+//   router.push('/');
+// } else {
+//   cityStore.selectCity(route.params.id);
+// }
 
 function askGeoPermission() {
   pendingLocation.value = true;
@@ -168,13 +181,14 @@ function updateLocation(position) {
   ownLocation.value = [lat, lng];
   hasGeoLocation.value = 1;
 
-  if (cityStore.step && cityStore.step.type === 'location') {
-    if (cityStore.step.target.type === 'circle') {
+  if (cityStore.step && cityStore.step.collection === 'step_poly') {
+    if (cityStore.step.item.polygon.type === 'circle') {
       // TODO: Improve circle location checker
       const inCircle = pointInCircle(lat, lng, cityStore.step.target.lat, cityStore.step.target.lng, cityStore.step.radius)
       console.log(inCircle);
-    } else if (cityStore.step.target.type === 'poly') {
-      const inPoly = pointInPoly([lat, lng], cityStore.step.target.points.map((l) => [l.lat, l.lng]));
+    } else if (cityStore.step.item.polygon.type === 'Polygon') {
+      const locs = cityStore.step.item.polygon.coordinates[0].map((l) => [l[1], l[0]])
+      const inPoly = pointInPoly([lat, lng], locs);
       console.log(inPoly);
       if (inPoly) {
         cityStore.nextStep();
@@ -187,9 +201,12 @@ function updateLocation(position) {
 }
 
 function handleMapClick(lat, lng) {
-  const inPoly = pointInPoly([lat, lng], cityStore.step.target.points.map((l) => [l.lat, l.lng]));
+  const locs = cityStore.step.item.polygon.coordinates[0].map((l) => [l[1], l[0]])
+  const inPoly = pointInPoly([lat, lng], locs);
   console.log(inPoly);
 }
+
+setup();
 </script>
 
 <style>

@@ -3,12 +3,16 @@ import {defineStore} from 'pinia'
 import {cities as jsonCities} from "@/assets/cities.js";
 
 export const useCityStore = defineStore('city', () => {
-    const cities = jsonCities
+    const cities = ref([])
     const city = ref(null)
     const stepNumber = ref(0)
 
-    function selectCity(id) {
-        city.value = cities.find((s) => s.id === id);
+    function setCities(data) {
+        cities.value = data;
+    }
+
+    function setCity(data) {
+        city.value = data;
         restore();
     }
 
@@ -39,5 +43,5 @@ export const useCityStore = defineStore('city', () => {
 
     const step = computed(() => city.value.steps[stepNumber.value]);
 
-    return {cities, stepNumber, step, city, selectCity, restore, hasCity, increaseStep, nextStep, previousStep}
+    return {setCities, cities, stepNumber, step, city, setCity, restore, hasCity, increaseStep, nextStep, previousStep}
 })

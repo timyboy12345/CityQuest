@@ -55,7 +55,6 @@ export const cities = [{
             {
                 "id": 2,
                 "type": "location",
-                "radius": 20,
                 "target": {
                     type: "poly",
                     points: [
@@ -86,24 +85,21 @@ export const cities = [{
                 hints: [{
                     content: "Reken 100 jaar terug vanaf 2021, in welk jaar is Veldhoven dan gesticht?"
                 }],
-                questions: [
+                answers: [
                     {
                         text: "1 mei 1921",
                         right: true,
                     },
                     {
                         text: "30 april 1920",
-                        right: false,
                         explanation: "Als Veldhoven zou zijn opgericht in 1920 zou het jubileum in 2020 hebben plaatsgevonden"
                     },
                     {
                         text: "25 februari 1921",
-                        right: false,
                         explanation: "Veldhoven is iets later dit jaar opgericht"
                     },
                     {
                         text: "8 september 1922",
-                        right: false,
                         explanation: "Als Veldhoven zou zijn opgericht in 1922 zou het jubileum in 2022 hebben plaatsgevonden"
                     }
                 ]
@@ -131,20 +127,99 @@ export const cities = [{
             {
                 "id": 1,
                 "type": "text",
-                "title": "De Eerste Clue: Domplein",
-                "content": "Je begint je avontuur op het beroemde Domplein. Onder dit plein liggen de overblijfselen van de oude Romeinse stad. Zoek naar een verborgen inscriptie die je naar de volgende aanwijzing zal leiden."
+                "title": "Het Verhaal",
+                "content": "Je bent in Utrecht met een goede reden, er zijn hints in de stad opgedoken, die lijken te duiden op een verborgen puzzel. Niemand lijkt te weten wie de puzzel heeft opgezet, of waar alle antwoorden naar lijden, dat moet uitgezocht worden!\n\nJullie gaan als onderzoeksteam dwars door de binnenstad, om deze puzzels op te lossen en hopelijk te achterhalen wat Utrecht te verbergen heeft.\n\nEn waar kan je zo'n speurtocht beter beginnen dan op misschien wel de bekendste plek van Utrecht, het Domplein. Je staat hier recht onder de Domtoren, een van de bekendste bouwwerken van Nederland, en een van de hoogste punten van Utrecht. We zien jullie daar!"
             },
             {
                 "id": 2,
+                type: "location",
+                "target": {
+                    type: "poly",
+                    points: [
+                        {
+                            lat: 51.42959735450574,
+                            lng: 5.400552342224122
+                        },
+                        {
+                            lat: 51.42959735450574,
+                            lng: 5.399329662322999
+                        },
+                        {
+                            lat: 51.42906265942788,
+                            lng: 5.399377942085267
+                        },
+                        {
+                            lat: 51.42906265942788,
+                            lng: 5.400552342224122
+                        }
+                    ]
+                }
+            },
+            {
+                "id": 1,
+                "type": "text",
+                "title": "Het Domplein",
+                "content": "Je begint je avontuur op het beroemde Domplein. Onder dit plein liggen de overblijfselen van de oude Romeinse stad. Zoek naar een verborgen inscriptie die je naar de volgende aanwijzing zal leiden.\n\n> Ben je benieuwd naar deze overblijfselen? Koop dan een ticket voor DomUnder voor een andere dag, hier ontdek je meer over de geschiedenis van het domplein."
+            },
+            {
+                "id": 2,
+                "type": "question",
+                "title": "Het Geheim van de Domtoren",
+                "content": "Je hebt nu genoeg aanwijzingen verzameld. Ontgrendel de verborgen kamer in de Domtoren en ontrafel het eeuwenoude geheim dat Utrecht heeft beschermd.",
+                "answers": [
+                    {
+                        text: "112 meter",
+                        right: true,
+                    },
+                    {
+                        text: "125 meter",
+                    },
+                    {
+                        text: "100 meter",
+                    }
+                ]
+            },
+            {
+                "id": 3,
                 "type": "text",
                 "title": "De Grachten en de Oudegracht",
                 "content": "Verken de grachten van Utrecht, waaronder de beroemde Oudegracht. In een van de kelders langs de gracht liggen verloren kronieken die je verder helpen met het ontsluieren van het mysterie."
             },
             {
-                "id": 3,
+                id: 4,
+                type: "question",
+                title: "De kelders langs de gracht",
+                content: "Welke functie hadden de werfkelders langs de Oudegracht oorspronkelijk?",
+                answers: [{
+                    text: "Woonhuizen",
+                }, {
+                    text: "Opslagruimtes",
+                    true: true
+                }, {
+                    text: "Werkplaatsen"
+                }]
+            },
+            {
+                "id": 5,
                 "type": "text",
                 "title": "Het Academiegebouw en de Drift",
                 "content": "Op deze historische plekken ontdek je oude geschriften die een verbinding leggen tussen de universiteit en het geheim van de Domtoren. Zoek in de archieven naar aanwijzingen."
+            },
+            {
+                id: 6,
+                type: "question",
+                title: "De oudste universiteit van Nederland",
+                content: "In welk jaar werd de Universiteit Utrecht opgericht?",
+                "answers": [
+                    {
+                        text: "1636",
+                        right: true
+                    }, {
+                        text: "1750"
+                    }, {
+                        text: "1600"
+                    }
+                ],
             },
             {
                 "id": 4,
