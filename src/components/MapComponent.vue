@@ -26,9 +26,8 @@ const poly = computed(() => cityStore.step.item.polygon.coordinates[0].map((l) =
       class="absolute -z-0"
       @click="$emit('mapClick', $event.latlng)"
   >
-    <!--        url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"-->
     <l-tile-layer
-        url="https://tile.openstreetmap.org/{z}/{x}/{y}.png'"
+        url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
         layer-type="base"
         name="CityQuest Map"
     ></l-tile-layer>
