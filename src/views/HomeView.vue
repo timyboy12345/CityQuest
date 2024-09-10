@@ -11,7 +11,7 @@ const q = fetchQuests()
 </script>
 
 <template>
-  <main class="m-8">
+  <main class="m-6 lg:m-8">
     <h2 class="text-2xl font-bold">Selecteer jouw stad</h2>
     <div class="text-gray-400">Dit is waar het allemaal begint, kies hier de stad waar je jouw speurtocht wil spelen.</div>
 

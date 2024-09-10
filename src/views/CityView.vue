@@ -3,7 +3,7 @@
     Dit device ondersteund geen geolocatie
   </div>
 
-  <div class="relative h-screen p-8" v-if="hasGeoLocation !== 1">
+  <div class="relative h-screen p-6 lg:p-8" v-if="hasGeoLocation !== 1">
     <div v-if="hasGeoLocation === 0">
       <div class="font-bold text-2xl">Locatietoestemming</div>
       <div class="opacity-80">Om dit spel te spelen hebben we je locatiegegevens nodig.</div>
@@ -32,7 +32,7 @@
     </RouterLink>
   </div>
 
-  <div v-else-if="cityStore.city" class="w-screen h-screen">
+  <div v-else-if="cityStore.city" class="w-full h-full">
     <MapComponent
         @map-click="handleMapClick($event.lat, $event.lng)"
         v-if="cityStore.step && cityStore.step.collection === 'step_poly'"
@@ -64,7 +64,7 @@
     <Transition>
       <div v-if="showHelp" class="z-40 left-0 top-0 w-screen h-screen fixed flex flex-col">
         <div @click="() => {showHelp = false; showHints = false}" class="-z-10 absolute l-0 t-0 bg-black opacity-50 h-full w-full"></div>
-        <div class="m-8 flex flex-col gap-y-4">
+        <div class="m-4 mt-auto flex flex-col gap-y-4">
           <div class="overflow-hidden flex flex-col divide-y divide-gray-200 z-50 bg-white rounded text-gray-800">
             <button class="py-2 px-4 hover:bg-gray-200 transition duration-100">Contact opnemen</button>
             <button class="py-2 px-4 hover:bg-gray-200 transition duration-100" v-if="cityStore.step && cityStore.step.hints" @click="showHints = !showHints">Hints {{ showHints ? "Verbergen" : "Tonen" }}</button>
@@ -163,6 +163,7 @@ function askGeoPermission() {
         function (error) {
           // Handle errors, e.g. user denied location sharing permissions
           console.error("Error getting user location:", error);
+          pendingLocation.value = false;
           hasGeoLocation.value = 2;
         }
     );
@@ -179,6 +180,7 @@ function updateLocation(position) {
   }
 
   ownLocation.value = [lat, lng];
+  pendingLocation.value = false;
   hasGeoLocation.value = 1;
 
   if (cityStore.step && cityStore.step.collection === 'step_poly') {

@@ -30,7 +30,7 @@ function handleAnswerClick(answer) {
 </script>
 
 <template>
-  <div class="p-8">
+  <div class="p-6 lg:p-8">
     <h1 class="font-bold text-2xl">Vraag</h1>
     <h2 class="opacity-80 mb-8">{{ cityStore.step.item.title }}</h2>
     <article class="prose max-w-none lg:prose-xl prose-invert"

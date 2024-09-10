@@ -1,6 +1,5 @@
 import {ref, computed} from 'vue'
 import {defineStore} from 'pinia'
-import {cities as jsonCities} from "@/assets/cities.js";
 
 export const useCityStore = defineStore('city', () => {
     const cities = ref([])

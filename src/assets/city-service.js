@@ -10,7 +10,7 @@ export async function fetchQuests() {
 }
 
 export async function fetchQuest(id) {
-    return await axios.get('https://data.arendz.nl/items/quest/veldhoven?fields=*,steps.*,steps.item.*.*')
+    return await axios.get(`https://data.arendz.nl/items/quest/${id}?fields=*,steps.*,steps.item.*.*`)
         .then((r) => r.data)
         .catch((e) => {
             console.error(e);
