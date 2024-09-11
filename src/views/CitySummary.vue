@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 m-6 lg:m-8" v-if="cityStore.city">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 m-4 md:m-6 lg:m-8" v-if="cityStore.city">
     <div class="md:col-span-2 lg:col-span-3">
       <h1 class="text-2xl font-bold">{{ cityStore.city.name }}</h1>
       <h2 class="opacity-80">Dit is de samenvatting van {{ cityStore.city.name }}</h2>

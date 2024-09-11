@@ -1,8 +1,6 @@
 <script setup>
 import {useCityStore} from '@/stores/city'
-import {fetchQuests} from "@/assets/city-service.js";
 import {useAuthStore} from "@/stores/auth.js";
-import {auth} from "@directus/sdk";
 import QuestCard from "@/components/cards/QuestCard.vue";
 import GeneralCard from "@/components/cards/GeneralCard.vue";
 
@@ -12,7 +10,7 @@ authStore.init()
 </script>
 
 <template>
-  <main class="m-6 lg:m-8">
+  <main class="m-4 md:m-6 lg:m-8">
     <h2 class="text-2xl font-bold">Welkom bij CityQuest</h2>
     <div class="text-gray-400">Dit is waar het allemaal begint, start hier jouw speurtocht, of koop een nieuwe
       speurtocht.
@@ -65,7 +63,7 @@ authStore.init()
         </template>
       </GeneralCard>
 
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid md:grid-cols-2 gap-4">
         <RouterLink to="/login"
                     class="outline outline-1 rounded py-2 px-4 hover:bg-white hover:bg-opacity-10 transition duration-100 text-center">
           Log hier in
@@ -77,8 +75,8 @@ authStore.init()
       </div>
     </div>
 
-    <div v-if="cityStore.cities" class="mt-8 grid lg:grid-cols-2 gap-4">
-      <QuestCard :key="city.id" v-for="city in cityStore.cities" :city="city"/>
-    </div>
+<!--    <div v-if="cityStore.cities" class="mt-8 grid lg:grid-cols-2 gap-4">-->
+<!--      <QuestCard :key="city.id" v-for="city in cityStore.cities" :city="city"/>-->
+<!--    </div>-->
   </main>
 </template>

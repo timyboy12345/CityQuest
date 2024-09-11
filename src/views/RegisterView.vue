@@ -35,7 +35,7 @@ const lastName = ref('')
 </script>
 
 <template>
-  <div class="m-6 lg:m-8">
+  <div class="m-4 md:m-6 lg:m-8">
     <h1 class="text-2xl font-bold">Registreren</h1>
     <p class="opacity-60">Maak hier je account aan en krijg toegang tot alle avonturen.</p>
     <form v-if="!authStore.isLoggedIn" @submit.prevent="submitRegister" class="mt-8">

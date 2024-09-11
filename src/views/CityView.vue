@@ -77,6 +77,7 @@
             <RouterLink :to="`/city/${cityStore.city.id}/summary`" class="py-2 px-4 hover:bg-gray-200 transition duration-100 text-center">Route Bekijken</RouterLink>
             <button class="py-2 px-4 hover:bg-gray-200 transition duration-100" v-if="cityStore.step && cityStore.step.hints" @click="showHints = !showHints">Hints {{ showHints ? "Verbergen" : "Tonen" }}</button>
             <button class="py-2 px-4 hover:bg-gray-200 transition duration-100" @click="devMode = !devMode">Devmodes {{ devMode ? "Uitzetten" : "Aanzetten" }}</button>
+            <RouterLink :to="`/`" class="py-2 px-4 hover:bg-gray-200 transition duration-100 text-center">Home</RouterLink>
           </div>
 
           <div class="bg-white rounded text-gray-800" v-if="cityStore.step && cityStore.step.hints && showHints">

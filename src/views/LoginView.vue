@@ -33,14 +33,14 @@ const password = ref('')
 </script>
 
 <template>
-  <div class="m-6 lg:m-8">
+  <div class="m-4 md:m-6 lg:m-8">
     <h1 class="text-2xl font-bold">Inloggen</h1>
     <p class="opacity-60">Log hier in om toegang te krijgen tot al jouw avonturen en nieuwe avonturen aan te gaan.</p>
     <form v-if="!authStore.isLoggedIn" @submit.prevent="submitLogin" class="mt-8">
       <div class="grid md:grid-cols-2 gap-4">
         <div class="flex flex-col">
           <label for="email">Email</label>
-          <input v-model="email" id="email" name="email" type="text" class="rounded text-gray-800">
+          <input v-model="email" id="email" name="email" type="email" class="rounded text-gray-800">
         </div>
         <div class="flex flex-col">
           <label for="password">Wachtwoord</label>
