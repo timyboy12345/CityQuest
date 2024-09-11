@@ -108,7 +108,7 @@ import {fetchQuest, fetchQuests} from "@/assets/city-service.js";
 const supportsGeoLocation = ref("geolocation" in navigator);
 // 0 = Not clear, 1 = Success, 2 = No permission
 const hasGeoLocation = ref(0);
-const devMode = ref(true);
+const devMode = ref(process.env.NODE_ENV === "development");
 const showHints = ref(false);
 const showHelp = ref(false);
 

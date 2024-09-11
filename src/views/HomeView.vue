@@ -1,28 +1,51 @@
 <script setup>
-import { useCityStore } from '@/stores/city'
+import {useCityStore} from '@/stores/city'
 import {fetchQuests} from "@/assets/city-service.js";
+import {useAuthStore} from "@/stores/auth.js";
+import {auth} from "@directus/sdk";
+import QuestCard from "@/components/cards/QuestCard.vue";
 
 const cityStore = useCityStore()
-const q = fetchQuests()
-    .then((d) => cityStore.setCities(d.data))
-    .catch((e) => {
-      console.error(e);
-    });
+const authStore = useAuthStore()
+authStore.init()
 </script>
 
 <template>
   <main class="m-6 lg:m-8">
-    <h2 class="text-2xl font-bold">Selecteer jouw stad</h2>
-    <div class="text-gray-400">Dit is waar het allemaal begint, kies hier de stad waar je jouw speurtocht wil spelen.</div>
+    <h2 class="text-2xl font-bold">Welkom bij CityQuest</h2>
+    <div class="text-gray-400">Dit is waar het allemaal begint, start hier jouw speurtocht, of koop een nieuwe
+      speurtocht.
+    </div>
 
-    <div class="mt-8 grid lg:grid-cols-2 gap-4">
-      <RouterLink :to="`/city/${city.id}`" class="cursor-pointer hover:shadow-gray-800 transition duration-100 flex flex-col rounded overflow-hidden bg-gray-900 shadow-gray-900 shadow" :key="city.id" v-for="city in cityStore.cities">
-        <img alt="Image depicting this city" class="w-full h-60 object-cover content-center" :src="`https://data.arendz.nl/assets/${city.image}`">
-        <div class="p-4">
-          <div class="font-bold">{{ city.name }}</div>
-          <div class="text-sm opacity-70">{{ city.description }}</div>
+    <div class="flex flex-col gap-4 mt-8" v-if="authStore.isLoggedIn && authStore.user">
+      <div class="bg-white rounded text-gray-800 p-4">
+        <div class="flex flex-row items-center">
+          <img alt="Jouw profielfoto" class="mr-4 rounded-full h-16 w-16 object-cover"
+               :src="`https://data.arendz.nl/assets/${authStore.user.avatar}`"/>
+          <div class="flex flex-col">
+            <div class="-mb-1">{{ authStore.user.first_name }} {{ authStore.user.last_name}}</div>
+            <div class="opacity-70">{{ authStore.user.email }}</div>
+          </div>
         </div>
-      </RouterLink>
+      </div>
+
+      <QuestCard :city="trip.quest" v-for="trip in authStore.trips" />
+
+      <button class="outline outline-1 py-2 px-4 hover:bg-white hover:bg-opacity-20 transition duration-100 rounded"
+              type="button" @click="authStore.logout()">
+        Uitloggen
+      </button>
+    </div>
+
+    <div v-else class="flex flex-col">
+      Je bent nog niet ingelogd
+
+      <RouterLink to="/login" class="hover:no-underline underline">Log hier in</RouterLink>
+      <RouterLink to="/register" class="hover:no-underline underline">Maak hier een account aan</RouterLink>
+    </div>
+
+    <div v-if="cityStore.cities" class="mt-8 grid lg:grid-cols-2 gap-4">
+      <QuestCard :key="city.id" v-for="city in cityStore.cities" :city="city"/>
     </div>
   </main>
 </template>
