@@ -4,14 +4,21 @@
   </div>
 
   <div class="relative h-screen p-6 lg:p-8" v-if="hasGeoLocation !== 1">
-    <div v-if="hasGeoLocation === 0">
+    <div class="flex flex-col items-center justify-center h-full"  v-if="hasGeoLocation === 0">
+    <div class="flex flex-col items-center bg-white shadow rounded p-4 max-w-96 text-gray-800">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-16 text-indigo-800 mb-4">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+      </svg>
+
       <div class="font-bold text-2xl">Locatietoestemming</div>
-      <div class="opacity-80">Om dit spel te spelen hebben we je locatiegegevens nodig.</div>
+      <div class="opacity-80 text-center">Om dit spel te spelen hebben we je locatiegegevens nodig.</div>
       <button v-if="!pendingLocation"
-              class="mt-8 py-1 px-2 rounded bg-indigo-700 hover:bg-indigo-800 transition-colors duration-100"
+              class="text-gray-200 mt-8 py-1 px-2 rounded bg-indigo-700 hover:bg-indigo-800 transition-colors duration-100"
               @click="askGeoPermission">
         Geef toestemming
       </button>
+    </div>
     </div>
 
     <div v-else-if="hasGeoLocation === 2">
@@ -64,9 +71,10 @@
     <Transition>
       <div v-if="showHelp" class="z-40 left-0 top-0 w-screen h-screen fixed flex flex-col">
         <div @click="() => {showHelp = false; showHints = false}" class="-z-10 absolute l-0 t-0 bg-black opacity-50 h-full w-full"></div>
-        <div class="m-4 mt-auto flex flex-col gap-y-4">
+        <div class="m-4 flex flex-col gap-y-4">
           <div class="overflow-hidden flex flex-col divide-y divide-gray-200 z-50 bg-white rounded text-gray-800">
             <button class="py-2 px-4 hover:bg-gray-200 transition duration-100">Contact opnemen</button>
+            <RouterLink :to="`/city/${cityStore.city.id}/summary`" class="py-2 px-4 hover:bg-gray-200 transition duration-100 text-center">Route Bekijken</RouterLink>
             <button class="py-2 px-4 hover:bg-gray-200 transition duration-100" v-if="cityStore.step && cityStore.step.hints" @click="showHints = !showHints">Hints {{ showHints ? "Verbergen" : "Tonen" }}</button>
             <button class="py-2 px-4 hover:bg-gray-200 transition duration-100" @click="devMode = !devMode">Devmodes {{ devMode ? "Uitzetten" : "Aanzetten" }}</button>
           </div>
@@ -120,7 +128,6 @@ let watcher = ref();
 
 const cityStore = useCityStore();
 const route = useRoute();
-const router = useRouter();
 
 onBeforeRouteLeave(() => {
   console.warn("LEFT CITY PAGE");
@@ -142,13 +149,6 @@ function setup() {
       .then((d) => cityStore.setCity(d.data))
       .catch((e) => console.error(e));
 }
-
-// if (!cityStore.hasCity(route.params.id)) {
-//   console.error("CITY NOT FOUND");
-//   router.push('/');
-// } else {
-//   cityStore.selectCity(route.params.id);
-// }
 
 function askGeoPermission() {
   pendingLocation.value = true;

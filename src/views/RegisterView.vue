@@ -36,8 +36,8 @@ const lastName = ref('')
 
 <template>
   <div class="m-6 lg:m-8">
-    <h1 class="text-2xl font-bold">Inloggen</h1>
-    <p class="opacity-60">Log hier in om toegang te krijgen tot al jouw avonturen en nieuwe avonturen aan te gaan.</p>
+    <h1 class="text-2xl font-bold">Registreren</h1>
+    <p class="opacity-60">Maak hier je account aan en krijg toegang tot alle avonturen.</p>
     <form v-if="!authStore.isLoggedIn" @submit.prevent="submitRegister" class="mt-8">
       <div class="grid md:grid-cols-2 gap-4">
         <div class="flex flex-col">
@@ -75,6 +75,8 @@ const lastName = ref('')
 
       <RouterLink to="/" class="underline mt-4">Terug naar de homepagina</RouterLink>
     </div>
+
+    <RouterLink to="/" class="underline hover:no-underline">Terug naar de homepagina</RouterLink>
   </div>
 </template>
 

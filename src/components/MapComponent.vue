@@ -32,7 +32,7 @@ const poly = computed(() => cityStore.step.item.polygon.coordinates[0].map((l) =
         name="CityQuest Map"
     ></l-tile-layer>
 
-    <l-circle-marker :lat-lng="ownLocation"></l-circle-marker>
+    <l-circle-marker v-if="ownLocation" :lat-lng="ownLocation"></l-circle-marker>
     <l-circle-marker
         v-if="cityStore.step.item.polygon.type === 'Circle'"
         :lat-lng="targetLocation"
