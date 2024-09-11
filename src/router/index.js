@@ -20,6 +20,21 @@ const router = createRouter({
       component: () => import('../views/RegisterView.vue')
     },
     {
+      path: '/shop',
+      name: 'shop',
+      component: () => import('../views/shop/ShopIndexView.vue')
+    },
+    {
+      path: '/shop/return',
+      name: 'shop-return',
+      component: () => import('../views/shop/ShopReturnView.vue')
+    },
+    {
+      path: '/shop/:id',
+      name: 'shop-detail',
+      component: () => import('../views/shop/ShopShowView.vue')
+    },
+    {
       path: '/city/:id',
       name: 'city',
       // route level code-splitting

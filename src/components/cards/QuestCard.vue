@@ -1,10 +1,10 @@
 <script setup>
-defineProps(['city'])
+defineProps(['city', 'to'])
 </script>
 
 <template>
   <RouterLink
-      :to="`/city/${city.id}`"
+      :to="to !== 'shop' ? `/city/${city.id}` : `/shop/${city.id}`"
       class="cursor-pointer hover:shadow-gray-800 transition duration-100 flex flex-col rounded overflow-hidden bg-gray-900 shadow-gray-900 shadow"
   >
     <img alt="Image depicting this city" class="w-full h-60 object-cover content-center"

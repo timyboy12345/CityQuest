@@ -1,8 +1,18 @@
 import {ref, computed} from 'vue'
 import {defineStore} from 'pinia'
-import {authentication, createDirectus, readItem, readItems, readMe, registerUser, rest} from "@directus/sdk";
+import {
+    authentication,
+    createDirectus,
+    createItem,
+    readItem,
+    readItems,
+    readMe,
+    registerUser,
+    rest
+} from "@directus/sdk";
 import {LocalStorage} from "@/assets/local-storage-service.js";
 import {useRouter} from "vue-router";
+import axios from "axios";
 
 const storage = new LocalStorage();
 const client = createDirectus('https://data.arendz.nl')
@@ -52,6 +62,7 @@ export const useAuthStore = defineStore('auth', () => {
                 storage.clear();
                 isLoggedIn.value = false;
                 user.value = {};
+                trips.value = null;
             });
     }
 
@@ -85,5 +96,33 @@ export const useAuthStore = defineStore('auth', () => {
             });
     }
 
-    return {user, trips, login, logout, register, getUser, getTrips, init, isLoggedIn}
+    async function getTrip(id) {
+        return client.request(readItem('trip', id, {
+            fields: ['*', 'quest.*']
+        }))
+            .then((r) => {
+                return r;
+            })
+            .catch((e) => {
+                throw e;
+            });
+    }
+
+    async function buyTrip(id, price) {
+        return await axios.post('https://data.arendz.nl/flows/trigger/bda4a15a-e7d5-4745-b5e3-eb11884fd380', {}, {
+            params: {
+                "amount": Number.isInteger(price) ? `${price}.00` : price,
+                "city": id,
+                "redirect": "https://cityquest.arendz.nl/shop/return",
+                "user": user.value.id
+            }
+        })
+            .then((r) => r.data.data)
+            .catch((e) => {
+                console.error(e);
+                throw e;
+            })
+    }
+
+    return {user, trips, buyTrip, login, logout, register, getUser, getTrips, getTrip, init, isLoggedIn}
 })

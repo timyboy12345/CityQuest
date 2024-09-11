@@ -3,10 +3,14 @@ import {useCityStore} from '@/stores/city'
 import {useAuthStore} from "@/stores/auth.js";
 import QuestCard from "@/components/cards/QuestCard.vue";
 import GeneralCard from "@/components/cards/GeneralCard.vue";
+import UserCard from "@/components/cards/UserCard.vue";
+import {computed} from "vue";
 
 const cityStore = useCityStore()
 const authStore = useAuthStore()
 authStore.init()
+
+const startableTrips = computed(() => authStore.trips.filter((t) => ['available', 'playing'].includes(t.status)))
 </script>
 
 <template>
@@ -17,20 +21,25 @@ authStore.init()
     </div>
 
     <div class="flex flex-col gap-4 mt-8" v-if="authStore.isLoggedIn && authStore.user">
-      <div class="bg-white rounded text-gray-800 p-4">
-        <div class="flex flex-row items-center">
-          <img alt="Jouw profielfoto" class="mr-4 rounded-full h-16 w-16 object-cover"
-               :src="`https://data.arendz.nl/assets/${authStore.user.avatar}`"/>
-          <div class="flex flex-col">
-            <div class="-mb-1">{{ authStore.user.first_name }} {{ authStore.user.last_name }}</div>
-            <div class="opacity-70">{{ authStore.user.email }}</div>
-          </div>
-        </div>
+      <UserCard/>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4" v-if="authStore.trips && authStore.trips.length > 0">
+        <QuestCard :city="trip.quest" v-for="trip in startableTrips"/>
       </div>
 
-      <div class="grid md:grid-cols-2 lg:grid-cols-3">
-        <QuestCard :city="trip.quest" v-for="trip in authStore.trips"/>
+      <div v-else-if="!authStore.trips">
+        Trips worden geladen...
       </div>
+
+      <div v-else>
+        Er konden geen trips gevonden worden, koop je eerste trip hieronder
+      </div>
+
+      <RouterLink
+          class="text-center outline outline-1 py-2 px-4 hover:bg-white hover:bg-opacity-20 transition duration-100 rounded"
+          type="button" to="/shop">
+        Shop
+      </RouterLink>
 
       <button
           class="outline outline-1 py-2 px-4 hover:bg-white hover:bg-opacity-20 transition duration-100 rounded"
@@ -74,9 +83,5 @@ authStore.init()
         </RouterLink>
       </div>
     </div>
-
-<!--    <div v-if="cityStore.cities" class="mt-8 grid lg:grid-cols-2 gap-4">-->
-<!--      <QuestCard :key="city.id" v-for="city in cityStore.cities" :city="city"/>-->
-<!--    </div>-->
   </main>
 </template>
