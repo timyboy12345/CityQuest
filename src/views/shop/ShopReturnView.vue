@@ -2,6 +2,7 @@
 import {useAuthStore} from "@/stores/auth.js";
 import {useRoute, useRouter} from "vue-router";
 import {ref} from "vue";
+import GeneralCard from "@/components/cards/GeneralCard.vue";
 
 const authStore = useAuthStore()
 const route = useRoute();
@@ -29,7 +30,8 @@ setup();
 
 <template>
   <div class="flex flex-col sm:items-center h-screen">
-    <div v-if="trip && Object.keys(trip).length === 0" class="bg-white rounded p-4 text-gray-800 sm:w-96 m-4 md:m-6 lg:m-8">
+    <div v-if="trip && Object.keys(trip).length === 0"
+         class="bg-gray-700 rounded p-4 text-gray-200 sm:w-96 m-4 md:m-6 lg:m-8">
       <h1 class="font-bold">Aankoop kon niet worden geladen</h1>
       <p class="opacity-80 mb-4">Er ging iets fout bij het laden van je aankoop, check of de URL weg goed is.</p>
       <p class="opacity-80">Mocht dat niet het probleem zijn, check dan of je aankoop wel op de
@@ -41,21 +43,39 @@ setup();
     <div class="sm:w-96 m-4 md:m-6 lg:m-8" v-else-if="trip">
       <h2 class="text-2xl font-bold">{{ trip.quest.name }}</h2>
       <div class="text-gray-400">
-        {{ trip.mollie_payment_status === 'paid' ? 'Aankoop voltooid' : 'Aankoop nog niet voltooid' }}
+        <span v-if="trip.mollie_payment_id">
+          {{ trip.mollie_payment_status === 'paid' ? 'Aankoop voltooid' : 'Aankoop nog niet voltooid' }}
+        </span>
+        <span v-else>
+          Trip toegevoegd aan je account
+        </span>
       </div>
 
       <div class="grid gap-4 mt-4">
-        <img :src="`https://data.arendz.nl/assets/${trip.quest.image}`"
+        <img v-if="trip.quest.image"
+             :src="`https://data.arendz.nl/assets/${trip.quest.image}`"
              alt="Image of this city"
              class="w-full h-60 object-cover object-center rounded">
 
-        <div v-if="trip.mollie_payment_status === 'paid'" class="bg-white rounded p-4 text-gray-800">
-          Je betaling is gelukt. Je kan nu naar de
-          <RouterLink to="/" class="underline hover:no-underline">homepagina</RouterLink> om meteen te beginnen, of je kan wachten tot een later moment. De keuze is aan jou!
+        <div v-if="trip.mollie_payment_id">
+          <div v-if="trip.mollie_payment_status === 'paid'" class="bg-white rounded p-4 text-gray-800">
+            Je betaling is gelukt. Je kan nu naar de
+            <RouterLink to="/" class="underline hover:no-underline">homepagina</RouterLink>
+            om meteen te beginnen, of je kan wachten tot een later moment. De keuze is aan jou!
+          </div>
+
+          <div class="bg-white rounded p-4 text-gray-800" v-else>
+            Je betaling is nog niet helemaal doorgekomen, check of het geld wel is afgeschreven. Zo ja, dan duurt het
+            misschien enkele minuten tot de betalingsverwerker dit aan ons heeft doorgegeven.
+          </div>
         </div>
 
-        <div class="bg-white rounded p-4 text-gray-800" v-else>
-          Je betaling is nog niet helemaal doorgekomen, check of het geld wel is afgeschreven. Zo ja, dan duurt het misschien enkele minuten tot de betalingsverwerker dit aan ons heeft doorgegeven.
+        <div v-else>
+          <GeneralCard>
+            Deze trip was gratis, je kan hem meteen spelen. Ga naar de
+            <RouterLink to="/" class="underline hover:no-underline">homepagina</RouterLink>
+            om te beginnen met spelen, of begin later.
+          </GeneralCard>
         </div>
 
         <RouterLink

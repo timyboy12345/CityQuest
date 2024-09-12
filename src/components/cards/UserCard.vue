@@ -5,7 +5,7 @@ const authStore = useAuthStore();
 </script>
 
 <template>
-  <div class="bg-white rounded text-gray-800 p-4">
+  <div class="bg-gray-700 rounded text-gray-200 p-4">
     <div class="flex flex-row items-center">
       <img alt="Jouw profielfoto" class="mr-4 rounded-full h-16 w-16 object-cover"
            :src="`https://data.arendz.nl/assets/${authStore.user.avatar}`"/>

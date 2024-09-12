@@ -117,7 +117,7 @@ export const useAuthStore = defineStore('auth', () => {
                 "user": user.value.id
             }
         })
-            .then((r) => r.data.data)
+            .then((r) => r.data)
             .catch((e) => {
                 console.error(e);
                 throw e;

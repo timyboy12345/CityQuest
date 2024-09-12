@@ -51,7 +51,7 @@ const startableTrips = computed(() => authStore.trips.filter((t) => ['available'
     <div v-else class="grid lg:grid-cols-2 gap-4 mt-4 lg:mt-8">
       <GeneralCard>
         <template v-slot:title>Dit is CityQuesty</template>
-        <template v-slot:content>
+        <template v-slot:default>
           <p>CityQuest is een nieuwe manier van steden ontdekken. Loop niet zomaar door een stad, maar los een mysterie
             op. Dit doe je door raadsels op te lossen, te puzzelen en waypoints te vinden. Aan het eind van de route kom
             je altijd op een gezellige plek in de binnenstad uit, waar je nog even kan naborrelen (mocht je dat
@@ -63,7 +63,7 @@ const startableTrips = computed(() => authStore.trips.filter((t) => ['available'
       </GeneralCard>
       <GeneralCard>
         <template v-slot:title>Wat heb ik nodig?</template>
-        <template v-slot:content>
+        <template v-slot:default>
           <p>Je hebt niet veel nodig, alleen een CityQuest-account en een telefoon met GPS en internetverbinding zijn
             voldoende om te beginnen. Je kan in je eentje spelen, maar gezelliger is natuurlijk om wat vrienden of
             familieleden uit te nodigen. Zo kan je de raadsels samen te lijf.</p>

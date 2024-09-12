@@ -4,6 +4,7 @@ import {useAuthStore} from "@/stores/auth.js";
 import {fetchQuests} from "@/assets/city-service.js";
 import {useRoute, useRouter} from "vue-router";
 import {computed, ref} from "vue";
+import GeneralCard from "@/components/cards/GeneralCard.vue";
 
 const cityStore = useCityStore()
 const authStore = useAuthStore()
@@ -30,7 +31,7 @@ function buy() {
   authStore.buyTrip(route.params.id, city.value.price)
       .then((data) => {
         console.log(data);
-        window.location.href = data._links.checkout.href;
+        window.location.href = data.next;
       })
       .catch((e) => {
         console.error(e);
@@ -39,6 +40,7 @@ function buy() {
 }
 
 const city = computed(() => cityStore.cities.find((c) => c.id === route.params.id));
+const price = computed(() => city.value ? (Math.round(city.value.price * 100) / 100).toFixed(2) : "???")
 
 setup();
 </script>
@@ -51,26 +53,29 @@ setup();
     </div>
 
     <div class="grid gap-4 mt-4">
-      <img :src="`https://data.arendz.nl/assets/${city.image}`"
+      <img v-if="city.image"
+           :src="`https://data.arendz.nl/assets/${city.image}`"
            alt="Image of this city"
            class="w-full h-60 object-cover object-center rounded">
-      <div class="bg-white rounded p-4 text-gray-800">{{ city.description }}</div>
+      <div class="bg-gray-700 rounded p-4 text-gray-200">{{ city.description }}</div>
 
-      <div class="bg-white rounded p-4 text-gray-800 flex flex-col">
-        <div class="text-sm mb-2 opacity-80">
-          Door deze quest te kopen ga je akkoord met de voorwaarden. Hij wordt meteen toegevoegd aan je speelbare
-          challenges na de betaling.
+      <GeneralCard>
+        <div class="flex flex-col">
+          <div class="text-sm mb-2 opacity-80">
+            Door deze quest te kopen ga je akkoord met de voorwaarden. Hij wordt meteen toegevoegd aan je speelbare
+            challenges na de betaling.
+          </div>
+          <button
+              type="button"
+              class="block text-white py-2 px-4 rounded bg-indigo-500 hover:bg-indigo-600 transition duration-100"
+              @click="buy()"
+              :class="{'opacity-50': handlingPayment}"
+              :disabled="handlingPayment"
+          >
+            Kopen (&euro;{{ price }})
+          </button>
         </div>
-        <button
-            type="button"
-            class="block text-white py-2 px-4 rounded bg-indigo-800 hover:bg-indigo-900 transition duration-100"
-            @click="buy()"
-            :class="{'opacity-50': handlingPayment}"
-            :disabled="handlingPayment"
-        >
-          Kopen
-        </button>
-      </div>
+      </GeneralCard>
     </div>
   </div>
 
