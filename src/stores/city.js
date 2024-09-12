@@ -2,7 +2,7 @@ import {ref, computed} from 'vue'
 import {defineStore} from 'pinia'
 
 export const useCityStore = defineStore('city', () => {
-    const cities = ref([])
+    const cities = ref()
     const city = ref(null)
     const intro = ref(null)
     const stepNumber = ref(null)

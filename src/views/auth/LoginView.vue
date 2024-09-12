@@ -1,11 +1,12 @@
 <script setup>
 import {ref} from "vue";
 import {useAuthStore} from "@/stores/auth.js";
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 
 const authStore = useAuthStore();
 authStore.init();
 const router = useRouter();
+const route = useRoute();
 
 function submitLogin() {
   if (submitting.value) {
@@ -14,10 +15,11 @@ function submitLogin() {
 
   submitting.value = true;
   authStore.login(email.value, password.value)
-      .then((r) => {
+      .then(() => {
         error.value = null;
         authStore.init()
-        router.push('/')
+        console.log(route);
+        router.push(route.query.next ?? '/');
       })
       .catch((e) => {
         console.error(e);
@@ -55,7 +57,7 @@ const password = ref('')
         <button type="submit"
                 :disabled="submitting"
                 :class="{'opacity-50': submitting}"
-                class="float-right px-4 py-2 bg-indigo-800 hover:bg-indigo-900 transition duration-100 rounded">
+                class="float-right px-4 py-2 bg-indigo-500 hover:bg-indigo-600 transition duration-100 rounded">
           Inloggen
         </button>
       </div>

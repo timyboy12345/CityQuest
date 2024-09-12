@@ -65,7 +65,7 @@ const lastName = ref('')
         <button type="submit"
                 :disabled="submitting"
                 :class="{'opacity-50': submitting}"
-                class="float-right px-4 py-2 bg-indigo-800 hover:bg-indigo-900 transition duration-100 rounded">
+                class="float-right px-4 py-2 bg-indigo-500 hover:bg-indigo-600 transition duration-100 rounded">
           Account aanmaken
         </button>
       </div>

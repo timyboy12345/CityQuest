@@ -10,14 +10,14 @@
       <div class="p-4" v-if="step.collection === 'step_text'">
         <h2 class="font-bold flex items-center">
           {{ step.item.title }}
-          <span class="rounded ml-2 bg-indigo-800 py-0.5 px-1 text-xs text-white font-medium">Text</span>
+          <span class="rounded ml-2 bg-indigo-500 py-0.5 px-1 text-xs text-white font-medium">Text</span>
         </h2>
         <div class="prose-sm" v-html="markdown.render(step.item.content)"></div>
       </div>
       <div class="p-4" v-if="step.collection === 'step_question'">
         <h2 class="font-bold flex items-center">
           {{ step.item.title }}
-          <span class="rounded ml-2 bg-indigo-800 py-0.5 px-1 text-xs text-white font-medium">Vraag</span>
+          <span class="rounded ml-2 bg-indigo-500 py-0.5 px-1 text-xs text-white font-medium">Vraag</span>
         </h2>
         <div class="prose-sm" v-html="markdown.render(step.item.content)"></div>
 
@@ -29,7 +29,7 @@
       <div class="relative" v-else-if="step.collection === 'step_poly'">
         <h2 class="p-4 font-bold flex items-center">
           {{ step.item.title }}
-          <span class="rounded ml-2 bg-indigo-800 py-0.5 px-1 text-xs text-white font-medium">Kaart</span>
+          <span class="rounded ml-2 bg-indigo-500 py-0.5 px-1 text-xs text-white font-medium">Kaart</span>
         </h2>
 
         <div class="rounded-b w-full h-96 overflow-hidden relative">
@@ -78,6 +78,11 @@
               v-for="step in cityStore.city.steps.filter((s) => s.collection === 'step_poly')"
               :lat-lngs="poly(step)"
           ></l-polygon>
+          <l-marker
+              v-for="(step, i) in cityStore.city.steps.filter((s) => s.collection === 'step_poly')"
+              :lat-lng="findPolyCenter(poly(step))"
+              :options="{icon: divIcon({html: i + 1, className: 'border-none bg-none'})}"
+          ></l-marker>
         </l-map>
       </div>
     </div>
@@ -89,20 +94,17 @@
 </template>
 
 <script setup>
-import {computed, ref} from "vue";
+import {ref} from "vue";
 import {useCityStore} from "@/stores/city.js";
 import {useRoute} from "vue-router";
 import {findPolyCenter, pointInPoly} from "@/scripts/geoHelpers.js";
 import {fetchQuest} from "@/assets/city-service.js";
 import MarkdownIt from "markdown-it";
-import MapComponent from "@/components/MapComponent.vue";
-import {LCircleMarker, LMap, LPolygon, LTileLayer} from "@vue-leaflet/vue-leaflet";
+import {LMap, LMarker, LPolygon, LTileLayer} from "@vue-leaflet/vue-leaflet";
+import {divIcon} from "leaflet/src/layer/index.js";
 
 let markdown = new MarkdownIt();
-let zoom = ref(16)
 let center = ref(null)
-let ownLocation = ref([0, 0])
-let pendingLocation = ref(false)
 
 function poly(step) {
   return step.item.polygon.coordinates[0].map((l) => [l[1], l[0]])
@@ -112,10 +114,11 @@ const cityStore = useCityStore();
 const route = useRoute();
 
 function setup() {
-  const c = fetchQuest(route.params.id)
+  fetchQuest(route.params.id)
       .then((d) => cityStore.setCity(d.data))
       .catch((e) => console.error(e));
 }
+
 
 function handleMapClick(lat, lng) {
   const locs = cityStore.step.item.polygon.coordinates[0].map((l) => [l[1], l[0]])

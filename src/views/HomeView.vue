@@ -5,12 +5,14 @@ import QuestCard from "@/components/cards/QuestCard.vue";
 import GeneralCard from "@/components/cards/GeneralCard.vue";
 import UserCard from "@/components/cards/UserCard.vue";
 import {computed} from "vue";
+import LoadingCard from "@/components/cards/LoadingCard.vue";
 
 const cityStore = useCityStore()
 const authStore = useAuthStore()
 authStore.init()
 
-const startableTrips = computed(() => authStore.trips.filter((t) => ['available', 'playing'].includes(t.status)))
+const doneLoading = computed(() => authStore.trips && authStore.trips.length > 0);
+const startebleTrips = computed(() => authStore.trips.filter((t) => ['available', 'playing'].includes(t.status)))
 </script>
 
 <template>
@@ -23,12 +25,12 @@ const startableTrips = computed(() => authStore.trips.filter((t) => ['available'
     <div class="flex flex-col gap-4 mt-8" v-if="authStore.isLoggedIn && authStore.user">
       <UserCard/>
 
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4" v-if="authStore.trips && authStore.trips.length > 0">
-        <QuestCard :city="trip.quest" v-for="trip in startableTrips"/>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4" v-if="doneLoading">
+        <QuestCard :city="trip.quest" v-for="trip in startebleTrips"/>
       </div>
 
       <div v-else-if="!authStore.trips">
-        Trips worden geladen...
+        <LoadingCard :with-card="true" />
       </div>
 
       <div v-else>
@@ -80,6 +82,10 @@ const startableTrips = computed(() => authStore.trips.filter((t) => ['available'
         <RouterLink to="/register"
                     class="outline outline-1 rounded py-2 px-4 hover:bg-white hover:bg-opacity-10 transition duration-100 text-center">
           Maak hier een account aan
+        </RouterLink>
+        <RouterLink to="/shop"
+                    class="outline outline-1 rounded py-2 px-4 hover:bg-white hover:bg-opacity-10 transition duration-100 text-center">
+          Shop
         </RouterLink>
       </div>
     </div>

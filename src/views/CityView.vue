@@ -103,14 +103,16 @@
       </div>
     </Transition>
 
-    <button v-if="devMode && hasGeoLocation === 1 && cityStore.stepNumber !== cityStore.intro.steps.length * -1"
-            class="hover:underline absolute left-4 bottom-4 text-xs opacity-50"
-            type="button"
-            @click="cityStore.previousStep()">
+    <button
+        v-if="devMode && (hasGeoLocation === 1 || cityStore.stepNumber < 0) && cityStore.stepNumber !== cityStore.intro.steps.length * -1"
+        class="hover:underline absolute left-4 bottom-4 text-xs opacity-50"
+        type="button"
+        @click="cityStore.previousStep()">
       Stap Terug
     </button>
 
-    <button v-if="devMode && hasGeoLocation === 1" class="hover:underline absolute right-4 bottom-4 text-xs opacity-50"
+    <button v-if="devMode && (hasGeoLocation === 1 || cityStore.stepNumber < 0)"
+            class="hover:underline absolute right-4 bottom-4 text-xs opacity-50"
             type="button"
             @click="cityStore.nextStep()">
       Volgende Stap
@@ -125,7 +127,7 @@
 <script setup>
 import {ref} from "vue";
 import {useCityStore} from "@/stores/city.js";
-import {onBeforeRouteLeave, useRoute, useRouter} from "vue-router";
+import {onBeforeRouteLeave, useRoute} from "vue-router";
 import MapComponent from "@/components/MapComponent.vue";
 import TextComponent from "@/components/TextComponent.vue";
 import {pointInCircle, pointInPoly} from "@/scripts/geoHelpers.js";
@@ -158,17 +160,17 @@ onBeforeRouteLeave(() => {
 })
 
 async function setup() {
-  const quests = fetchQuests()
+  fetchQuests()
       .then((d) => cityStore.setCities(d.data))
       .catch((e) => {
         console.error(e);
       });
 
-  const city = await fetchQuest(route.params.id)
+  await fetchQuest(route.params.id)
       .then((d) => cityStore.setCity(d.data))
       .catch((e) => console.error(e));
 
-  const i = fetchIntro()
+  fetchIntro()
       .then((d) => {
         cityStore.setIntro(d.data)
         cityStore.checkResumeStep()
@@ -177,6 +179,7 @@ async function setup() {
         console.error(e);
       });
 }
+
 
 function askGeoPermission() {
   pendingLocation.value = true;

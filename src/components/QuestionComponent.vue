@@ -50,12 +50,12 @@ function handleAnswerClick(answer) {
     </div>
 
     <div :class="{hidden: !rightExplanation && !wrongExplanation}" class="fixed flex flex-col items-stretch justify-evenly w-full h-full left-0 top-0">
-      <div class="-z-10 bg-black opacity-50 w-full h-full absolute"></div>
-      <div class="z-10 text-gray-800 p-8 bg-white rounded m-8">
+      <div class="-z-10 bg-black opacity-60 w-full h-full absolute"></div>
+      <div class="z-10 text-gray-200 p-4 bg-gray-700 rounded m-8">
         <div v-if="rightExplanation">
           {{ rightExplanation }}
 
-          <button class="block mt-8 rounded bg-indigo-500 hover:bg-indigo-600 transition duration-100 text-white py-2 px-4" @click="cityStore.nextStep()" type="button">
+          <button class="block mt-4 rounded bg-indigo-500 hover:bg-indigo-600 transition duration-100 text-white py-2 px-4" @click="cityStore.nextStep()" type="button">
             Ga door
           </button>
         </div>
@@ -63,7 +63,7 @@ function handleAnswerClick(answer) {
         <div v-else>
           {{ wrongExplanation }}
 
-          <button class="block mt-8 rounded bg-indigo-500 hover:bg-indigo-600 transition duration-100 text-white py-2 px-4" @click="wrongExplanation = null" type="button">
+          <button class="block mt-4 rounded bg-indigo-500 hover:bg-indigo-600 transition duration-100 text-white py-2 px-4" @click="wrongExplanation = null" type="button">
             Nog een poging
           </button>
         </div>
