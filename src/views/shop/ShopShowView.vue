@@ -72,7 +72,7 @@ setup();
               :class="{'opacity-50': handlingPayment}"
               :disabled="handlingPayment"
           >
-            Kopen (&euro;{{ price }})
+            {{ city.price === 0 ? 'Gratis Claimen' : `Kopen voor &euro;${price}` }}
           </button>
         </div>
       </GeneralCard>

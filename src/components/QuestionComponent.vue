@@ -40,7 +40,7 @@ function handleAnswerClick(answer) {
       <button
           @click="handleAnswerClick(answer)"
           v-for="answer in cityStore.step.item.answers"
-          class="rounded bg-indigo-800 hover:bg-indigo-900 transition duration-100 py-2 px-4"
+          class="rounded bg-indigo-500 hover:bg-indigo-600 transition duration-100 py-2 px-4"
           type="button"
           :class="{'opacity-50 bg-red-800 hover:bg-red-900': wrongAnswers.includes(answer.text)}"
           :disabled="wrongAnswers.includes(answer.text)"
@@ -55,7 +55,7 @@ function handleAnswerClick(answer) {
         <div v-if="rightExplanation">
           {{ rightExplanation }}
 
-          <button @click="cityStore.nextStep()" type="button">
+          <button class="block mt-8 rounded bg-indigo-500 hover:bg-indigo-600 transition duration-100 text-white py-2 px-4" @click="cityStore.nextStep()" type="button">
             Ga door
           </button>
         </div>
@@ -63,7 +63,7 @@ function handleAnswerClick(answer) {
         <div v-else>
           {{ wrongExplanation }}
 
-          <button class="block mt-8 rounded bg-indigo-800 hover:bg-indigo-900 transition duration-100 text-white py-2 px-4" @click="wrongExplanation = null" type="button">
+          <button class="block mt-8 rounded bg-indigo-500 hover:bg-indigo-600 transition duration-100 text-white py-2 px-4" @click="wrongExplanation = null" type="button">
             Nog een poging
           </button>
         </div>

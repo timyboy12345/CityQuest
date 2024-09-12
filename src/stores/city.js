@@ -4,7 +4,12 @@ import {defineStore} from 'pinia'
 export const useCityStore = defineStore('city', () => {
     const cities = ref([])
     const city = ref(null)
-    const stepNumber = ref(0)
+    const intro = ref(null)
+    const stepNumber = ref(null)
+
+    function setIntro(data) {
+        intro.value = data;
+    }
 
     function setCities(data) {
         cities.value = data;
@@ -17,6 +22,15 @@ export const useCityStore = defineStore('city', () => {
 
     function hasCity(id) {
         return cities.find((s) => s.id === id) !== undefined;
+    }
+
+    function checkResumeStep() {
+        if (confirm('Wil je doorgaan waar je was gebleven')) {
+            stepNumber.value = parseInt(localStorage.getItem(`step-number-${city.value.id}`));
+        } else {
+            stepNumber.value = intro.value.steps.length * -1;
+            localStorage.setItem(`step-number-${city.value.id}`, stepNumber.value);
+        }
     }
 
     function increaseStep(amount) {
@@ -40,7 +54,27 @@ export const useCityStore = defineStore('city', () => {
         }
     }
 
-    const step = computed(() => city.value.steps[stepNumber.value]);
+    const step = computed(() => stepNumber.value >= 0
+        ? city.value.steps[stepNumber.value]
+        : intro.value ? intro.value.steps[stepNumber.value + intro.value.steps.length] : null);
 
-    return {setCities, cities, stepNumber, step, city, setCity, restore, hasCity, increaseStep, nextStep, previousStep}
+    const passedIntro = computed(() => stepNumber.value >= 0);
+
+    return {
+        setCities,
+        setIntro,
+        cities,
+        intro,
+        passedIntro,
+        stepNumber,
+        step,
+        city,
+        setCity,
+        restore,
+        hasCity,
+        checkResumeStep,
+        increaseStep,
+        nextStep,
+        previousStep
+    }
 })

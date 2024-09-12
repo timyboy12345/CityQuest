@@ -3,81 +3,94 @@
     Dit device ondersteund geen geolocatie
   </div>
 
-  <div class="relative h-screen p-6 lg:p-8" v-if="hasGeoLocation !== 1">
-    <div class="flex flex-col items-center justify-center h-full"  v-if="hasGeoLocation === 0">
-    <div class="flex flex-col items-center bg-gray-700 shadow rounded p-4 max-w-96 text-gray-200">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-16 text-indigo-500 mb-4">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-      </svg>
+  <div v-if="cityStore.city && cityStore.intro">
+    <div class="relative h-screen p-6 lg:p-8" v-if="cityStore.passedIntro && hasGeoLocation !== 1">
+      <div class="flex flex-col items-center justify-center h-full" v-if="hasGeoLocation === 0">
+        <div class="flex flex-col items-center bg-gray-700 shadow rounded p-4 max-w-96 text-gray-200">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+               stroke="currentColor" class="size-16 text-indigo-500 mb-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/>
+          </svg>
 
-      <div class="font-bold text-2xl">Locatietoestemming</div>
-      <div class="opacity-80 text-center">Om dit spel te spelen hebben we je locatiegegevens nodig.</div>
-      <button v-if="!pendingLocation"
-              class="text-gray-200 mt-8 py-1 px-2 rounded bg-indigo-500 hover:bg-indigo-600 transition-colors duration-100"
-              @click="askGeoPermission">
-        Geef toestemming
+          <div class="font-bold text-2xl">Locatietoestemming</div>
+          <div class="opacity-80 text-center">Om dit spel te spelen hebben we je locatiegegevens nodig.</div>
+          <button v-if="!pendingLocation"
+                  class="text-gray-200 mt-8 py-1 px-2 rounded bg-indigo-500 hover:bg-indigo-600 transition-colors duration-100"
+                  @click="askGeoPermission">
+            Geef toestemming
+          </button>
+        </div>
+      </div>
+
+      <div v-else-if="hasGeoLocation === 2">
+        <div class="font-bold text-2xl">Locatietoestemming</div>
+        <div class="opacity-80">Er ging iets fout met je geolocatie, probeer opnieuw toestemming te geven.</div>
+
+        <button v-if="!pendingLocation"
+                class="mt-8 py-1 px-2 rounded bg-indigo-500 hover:bg-indigo-600 transition-colors duration-100"
+                @click="askGeoPermission">
+          Geef toestemming
+        </button>
+      </div>
+
+      <RouterLink
+          class="absolute bottom-8 mt-8 text-sm underline opacity-80 hover:opacity-90 rounded duration-100 transition"
+          to="/">
+        Terug naar de homepagina
+      </RouterLink>
+    </div>
+
+    <div v-else-if="cityStore.city" class="w-full h-full">
+      <div v-if="cityStore.step">
+        <MapComponent
+            @map-click="handleMapClick($event.lat, $event.lng)"
+            v-if="cityStore.step.collection === 'step_poly'"
+            :center="center"
+            :zoom="zoom"
+            :own-location="ownLocation"
+        ></MapComponent>
+        <TextComponent v-else-if="cityStore.step.collection === 'step_text'"></TextComponent>
+        <QuestionComponent
+            v-else-if="cityStore.step.collection === 'step_question'"></QuestionComponent>
+        <div v-else>ONBEKENDE STAPTYPE</div>
+      </div>
+      <div v-else>
+        Geen stap ingesteld
+      </div>
+
+      <button
+          @click="showHelp = true"
+          type="button"
+          class="rounded-full p-2 fixed left-8 bottom-8 bg-indigo-500 hover:bg-indigo-600 transition duration-100">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+             class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"/>
+        </svg>
       </button>
     </div>
-    </div>
-
-    <div v-else-if="hasGeoLocation === 2">
-      <div class="font-bold text-2xl">Locatietoestemming</div>
-      <div class="opacity-80">Er ging iets fout met je geolocatie, probeer opnieuw toestemming te geven.</div>
-
-      <button v-if="!pendingLocation"
-              class="mt-8 py-1 px-2 rounded bg-indigo-500 hover:bg-indigo-600 transition-colors duration-100"
-              @click="askGeoPermission">
-        Geef toestemming
-      </button>
-    </div>
-
-    <RouterLink
-        class="absolute bottom-8 mt-8 text-sm underline opacity-80 hover:opacity-90 rounded duration-100 transition"
-        to="/">
-      Terug naar de homepagina
-    </RouterLink>
-  </div>
-
-  <div v-else-if="cityStore.city" class="w-full h-full">
-    <MapComponent
-        @map-click="handleMapClick($event.lat, $event.lng)"
-        v-if="cityStore.step && cityStore.step.collection === 'step_poly'"
-        :center="center"
-        :zoom="zoom"
-        :own-location="ownLocation"
-    ></MapComponent>
-    <TextComponent v-else-if="cityStore.step && cityStore.step.collection === 'step_text'"></TextComponent>
-    <QuestionComponent v-else-if="cityStore.step && cityStore.step.collection === 'step_question'"></QuestionComponent>
-    <div v-else>ONBEKENDE STAP</div>
-
-    <!--    <div class="absolute top-0 left-0 z-10 w-full">-->
-    <!--      <div class="text-gray-900 bg-white rounded p-4 m-4">-->
-    <!--        Test-->
-    <!--      </div>-->
-    <!--    </div>-->
-
-    <button
-        @click="showHelp = true"
-        type="button"
-        class="rounded-full p-2 fixed left-8 bottom-8 bg-indigo-500 hover:bg-indigo-600 transition duration-100">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-           class="size-6">
-        <path stroke-linecap="round" stroke-linejoin="round"
-              d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"/>
-      </svg>
-    </button>
 
     <Transition>
       <div v-if="showHelp" class="z-40 left-0 top-0 w-screen h-screen fixed flex flex-col">
-        <div @click="() => {showHelp = false; showHints = false}" class="-z-10 absolute l-0 t-0 bg-black opacity-50 h-full w-full"></div>
+        <div @click="() => {showHelp = false; showHints = false}"
+             class="-z-10 absolute l-0 t-0 bg-black opacity-50 h-full w-full"></div>
         <div class="m-4 flex flex-col gap-y-4">
           <div class="overflow-hidden flex flex-col divide-y divide-gray-200 z-50 bg-white rounded text-gray-800">
             <button class="py-2 px-4 hover:bg-gray-200 transition duration-100">Contact opnemen</button>
-            <RouterLink :to="`/city/${cityStore.city.id}/summary`" class="py-2 px-4 hover:bg-gray-200 transition duration-100 text-center">Route Bekijken</RouterLink>
-            <button class="py-2 px-4 hover:bg-gray-200 transition duration-100" v-if="cityStore.step && cityStore.step.hints" @click="showHints = !showHints">Hints {{ showHints ? "Verbergen" : "Tonen" }}</button>
-            <button class="py-2 px-4 hover:bg-gray-200 transition duration-100" @click="devMode = !devMode">Devmodes {{ devMode ? "Uitzetten" : "Aanzetten" }}</button>
-            <RouterLink :to="`/`" class="py-2 px-4 hover:bg-gray-200 transition duration-100 text-center">Home</RouterLink>
+            <RouterLink :to="`/city/${cityStore.city.id}/summary`"
+                        class="py-2 px-4 hover:bg-gray-200 transition duration-100 text-center">Route Bekijken
+            </RouterLink>
+            <button class="py-2 px-4 hover:bg-gray-200 transition duration-100"
+                    v-if="cityStore.step && cityStore.step.hints" @click="showHints = !showHints">Hints
+              {{ showHints ? "Verbergen" : "Tonen" }}
+            </button>
+            <button class="py-2 px-4 hover:bg-gray-200 transition duration-100" @click="devMode = !devMode">Devmodes
+              {{ devMode ? "Uitzetten" : "Aanzetten" }}
+            </button>
+            <RouterLink :to="`/`" class="py-2 px-4 hover:bg-gray-200 transition duration-100 text-center">Home
+            </RouterLink>
           </div>
 
           <div class="bg-white rounded text-gray-800" v-if="cityStore.step && cityStore.step.hints && showHints">
@@ -90,17 +103,22 @@
       </div>
     </Transition>
 
-    <button v-if="devMode && cityStore.stepNumber !== 0" class="hover:underline absolute left-4 bottom-4 text-xs opacity-50"
+    <button v-if="devMode && hasGeoLocation === 1 && cityStore.stepNumber !== cityStore.intro.steps.length * -1"
+            class="hover:underline absolute left-4 bottom-4 text-xs opacity-50"
             type="button"
             @click="cityStore.previousStep()">
       Stap Terug
     </button>
 
-    <button v-if="devMode" class="hover:underline absolute right-4 bottom-4 text-xs opacity-50"
+    <button v-if="devMode && hasGeoLocation === 1" class="hover:underline absolute right-4 bottom-4 text-xs opacity-50"
             type="button"
             @click="cityStore.nextStep()">
       Volgende Stap
     </button>
+  </div>
+
+  <div v-else class="mt-8 text-center">
+    Stad wordt geladen...
   </div>
 </template>
 
@@ -112,7 +130,7 @@ import MapComponent from "@/components/MapComponent.vue";
 import TextComponent from "@/components/TextComponent.vue";
 import {pointInCircle, pointInPoly} from "@/scripts/geoHelpers.js";
 import QuestionComponent from "@/components/QuestionComponent.vue";
-import {fetchQuest, fetchQuests} from "@/assets/city-service.js";
+import {fetchIntro, fetchQuest, fetchQuests} from "@/assets/city-service.js";
 
 const supportsGeoLocation = ref("geolocation" in navigator);
 // 0 = Not clear, 1 = Success, 2 = No permission
@@ -139,16 +157,25 @@ onBeforeRouteLeave(() => {
   }
 })
 
-function setup() {
-  const q = fetchQuests()
+async function setup() {
+  const quests = fetchQuests()
       .then((d) => cityStore.setCities(d.data))
       .catch((e) => {
         console.error(e);
       });
 
-  const c = fetchQuest(route.params.id)
+  const city = await fetchQuest(route.params.id)
       .then((d) => cityStore.setCity(d.data))
       .catch((e) => console.error(e));
+
+  const i = fetchIntro()
+      .then((d) => {
+        cityStore.setIntro(d.data)
+        cityStore.checkResumeStep()
+      })
+      .catch((e) => {
+        console.error(e);
+      });
 }
 
 function askGeoPermission() {

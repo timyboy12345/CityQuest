@@ -17,3 +17,12 @@ export async function fetchQuest(id) {
             throw new Error("Could not fetch quest");
         })
 }
+
+export async function fetchIntro() {
+    return await axios.get(`https://data.arendz.nl/items/intro/?fields=*,steps.*,steps.item.*.*`)
+        .then((r) => r.data)
+        .catch((e) => {
+            console.error(e);
+            throw new Error("Could not fetch intro");
+        })
+}
