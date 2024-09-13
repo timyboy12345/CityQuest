@@ -1,9 +1,8 @@
-import {ref, computed} from 'vue'
+import {ref} from 'vue'
 import {defineStore} from 'pinia'
 import {
     authentication,
     createDirectus,
-    createItem,
     readItem,
     readItems,
     readMe,
@@ -11,7 +10,6 @@ import {
     rest
 } from "@directus/sdk";
 import {LocalStorage} from "@/assets/local-storage-service.js";
-import {useRouter} from "vue-router";
 import axios from "axios";
 
 const storage = new LocalStorage();
@@ -35,7 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
         }
 
         return await getUser()
-            .then((u) => {
+            .then(() => {
                 getTrips();
             })
             .catch((e) => console.error(e));
@@ -113,7 +111,7 @@ export const useAuthStore = defineStore('auth', () => {
             params: {
                 "amount": Number.isInteger(price) ? `${price}.00` : price,
                 "city": id,
-                "redirect": "https://cityquest.arendz.nl/shop/return",
+                "redirect": "https://app.storywalks.nl/shop/return",
                 "user": user.value.id
             }
         })

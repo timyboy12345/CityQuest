@@ -29,7 +29,7 @@ const poly = computed(() => cityStore.step.item.polygon.coordinates[0].map((l) =
     <l-tile-layer
         url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
         layer-type="base"
-        name="CityQuest Map"
+        name="StoryWalks Map"
     ></l-tile-layer>
 
     <l-circle-marker v-if="ownLocation" :lat-lng="ownLocation"></l-circle-marker>

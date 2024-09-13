@@ -17,7 +17,7 @@ const startebleTrips = computed(() => authStore.trips.filter((t) => ['available'
 
 <template>
   <main class="m-4 md:m-6 lg:m-8">
-    <h2 class="text-2xl font-bold">Welkom bij CityQuest</h2>
+    <h2 class="text-2xl font-bold">Welkom bij StoryWalks</h2>
     <div class="text-gray-400">Dit is waar het allemaal begint, start hier jouw speurtocht, of koop een nieuwe
       speurtocht.
     </div>
@@ -52,9 +52,9 @@ const startebleTrips = computed(() => authStore.trips.filter((t) => ['available'
 
     <div v-else class="grid lg:grid-cols-2 gap-4 mt-4 lg:mt-8">
       <GeneralCard>
-        <template v-slot:title>Dit is CityQuesty</template>
+        <template v-slot:title>Dit is StoryWalks</template>
         <template v-slot:default>
-          <p>CityQuest is een nieuwe manier van steden ontdekken. Loop niet zomaar door een stad, maar los een mysterie
+          <p>StoryWalks is een nieuwe manier van steden ontdekken. Loop niet zomaar door een stad, maar los een mysterie
             op. Dit doe je door raadsels op te lossen, te puzzelen en waypoints te vinden. Aan het eind van de route kom
             je altijd op een gezellige plek in de binnenstad uit, waar je nog even kan naborrelen (mocht je dat
             willen).</p>
@@ -66,10 +66,10 @@ const startebleTrips = computed(() => authStore.trips.filter((t) => ['available'
       <GeneralCard>
         <template v-slot:title>Wat heb ik nodig?</template>
         <template v-slot:default>
-          <p>Je hebt niet veel nodig, alleen een CityQuest-account en een telefoon met GPS en internetverbinding zijn
+          <p>Je hebt niet veel nodig, alleen een StoryWalks-account en een telefoon met GPS en internetverbinding zijn
             voldoende om te beginnen. Je kan in je eentje spelen, maar gezelliger is natuurlijk om wat vrienden of
             familieleden uit te nodigen. Zo kan je de raadsels samen te lijf.</p>
-          <p>Je kan CityQuest spelen op elk moment, er zit geen tijdslimiet op en er zijn geen verplichtingen. Zit je
+          <p>Je kan StoryWalks spelen op elk moment, er zit geen tijdslimiet op en er zijn geen verplichtingen. Zit je
             ergens vast? Je kan altijd hints krijgen via het systeem, zo kan je de route dus altijd afmaken.</p>
         </template>
       </GeneralCard>

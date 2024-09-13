@@ -45,7 +45,7 @@
             <l-tile-layer
                 url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
                 layer-type="base"
-                name="CityQuest Map"
+                name="StoryWalks Map"
             ></l-tile-layer>
             <l-polygon
                 :lat-lngs="poly(step)"
@@ -72,7 +72,7 @@
           <l-tile-layer
               url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
               layer-type="base"
-              name="CityQuest Map"
+              name="StoryWalks Map"
           ></l-tile-layer>
           <l-polygon
               v-for="step in cityStore.city.steps.filter((s) => s.collection === 'step_poly')"
