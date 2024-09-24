@@ -35,18 +35,20 @@ const lastName = ref('')
 </script>
 
 <template>
-  <div class="m-4 md:m-6 lg:m-8">
+  <div class="m-4 sm:w-96 sm:mx-auto mt-8">
     <h1 class="text-2xl font-bold">Registreren</h1>
     <p class="opacity-60">Maak hier je account aan en krijg toegang tot alle avonturen.</p>
     <form v-if="!authStore.isLoggedIn" @submit.prevent="submitRegister" class="mt-8">
-      <div class="grid md:grid-cols-2 gap-4">
+      <div class="grid gap-4">
         <div class="flex flex-col">
           <label for="email">Email</label>
           <input v-model="email" id="email" name="email" type="text" class="rounded text-gray-800">
+          <div class="text-xs opacity-70">Met dit e-mail adres log je in en hierop ontvang je je aankopen.</div>
         </div>
         <div class="flex flex-col">
           <label for="password">Wachtwoord</label>
           <input v-model="password" id="password" name="password" type="password" class="rounded text-gray-800">
+          <div class="text-xs opacity-70">Gebruik bij voorkeur een wachtwoord wat je nog nergens anders hebt gebruikt.</div>
         </div>
         <div class="flex flex-col">
           <label for="firstName">Voornaam</label>
@@ -55,6 +57,7 @@ const lastName = ref('')
         <div class="flex flex-col">
           <label for="lastname">Achternaam</label>
           <input v-model="lastName" id="lastname" name="lastname" type="text" class="rounded text-gray-800">
+          <div class="text-xs opacity-70">Voer hier ook eventuele tussenvoegsels zoals "van de" in.</div>
         </div>
       </div>
 
@@ -76,7 +79,7 @@ const lastName = ref('')
       <RouterLink to="/" class="underline mt-4">Terug naar de homepagina</RouterLink>
     </div>
 
-    <RouterLink to="/" class="underline hover:no-underline">Terug naar de homepagina</RouterLink>
+    <RouterLink to="/" class="underline hover:no-underline block mt-4">Terug naar de homepagina</RouterLink>
   </div>
 </template>
 

@@ -123,7 +123,6 @@ function setup() {
 function handleMapClick(lat, lng) {
   const locs = cityStore.step.item.polygon.coordinates[0].map((l) => [l[1], l[0]])
   const inPoly = pointInPoly([lat, lng], locs);
-  console.log(inPoly);
 }
 
 function globalMapCenter() {

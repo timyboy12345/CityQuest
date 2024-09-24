@@ -84,6 +84,5 @@ export function findPolyCenter(poly) {
     const region = new Region(polygon);
 
     const center = region.centroid();
-    console.log(center);
     return [center.x, center.y]
 }

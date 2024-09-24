@@ -25,12 +25,12 @@ export const useCityStore = defineStore('city', () => {
     }
 
     function checkResumeStep() {
-        if (confirm('Wil je doorgaan waar je was gebleven')) {
+        // if (confirm('Wil je doorgaan waar je was gebleven')) {
             stepNumber.value = parseInt(localStorage.getItem(`step-number-${city.value.id}`));
-        } else {
-            stepNumber.value = intro.value.steps.length * -1;
-            localStorage.setItem(`step-number-${city.value.id}`, stepNumber.value);
-        }
+        // } else {
+        //     stepNumber.value = intro.value.steps.length * -1;
+        //     localStorage.setItem(`step-number-${city.value.id}`, stepNumber.value);
+        // }
     }
 
     function increaseStep(amount) {

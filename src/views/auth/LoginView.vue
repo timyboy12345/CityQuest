@@ -35,11 +35,12 @@ const password = ref('')
 </script>
 
 <template>
-  <div class="m-4 md:m-6 lg:m-8">
+  <div class="m-4 sm:w-96 sm:mx-auto mt-8">
     <h1 class="text-2xl font-bold">Inloggen</h1>
     <p class="opacity-60">Log hier in om toegang te krijgen tot al jouw avonturen en nieuwe avonturen aan te gaan.</p>
+
     <form v-if="!authStore.isLoggedIn" @submit.prevent="submitLogin" class="mt-8">
-      <div class="grid md:grid-cols-2 gap-4">
+      <div class="grid gap-4">
         <div class="flex flex-col">
           <label for="email">Email</label>
           <input v-model="email" id="email" name="email" type="email" class="rounded text-gray-800">
@@ -50,8 +51,8 @@ const password = ref('')
         </div>
       </div>
 
-      <div class="flex gap-x-4 justify-end items-center mt-4">
-        <div v-if="error" class="text-red-500 rounded outline outline-1 py-2 px-4">
+      <div class="flex gap-x-4 justify-end items-start mt-4">
+        <div v-if="error" class="text-red-500 text-sm rounded outline outline-1 py-2 px-4">
           {{ error }}
         </div>
         <button type="submit"
@@ -66,7 +67,7 @@ const password = ref('')
       Je bent al ingelogd
     </div>
 
-    <RouterLink to="/" class="underline hover:no-underline">Terug naar de homepagina</RouterLink>
+    <RouterLink to="/" class="underline hover:no-underline mt-4 block">Terug naar de homepagina</RouterLink>
   </div>
 </template>
 
