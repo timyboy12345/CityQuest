@@ -40,6 +40,12 @@ const startebleTrips = computed(() => authStore.trips.filter((t) => ['available'
       <div class="grid md:grid-cols-2 gap-4">
         <RouterLink
             class="text-center outline outline-1 py-2 px-4 hover:bg-white hover:bg-opacity-20 transition duration-100 rounded"
+            type="button" to="/profile">
+          Mijn Profiel
+        </RouterLink>
+
+        <RouterLink
+            class="text-center outline outline-1 py-2 px-4 hover:bg-white hover:bg-opacity-20 transition duration-100 rounded"
             type="button" to="/shop">
           Shop
         </RouterLink>
