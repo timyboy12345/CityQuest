@@ -55,7 +55,7 @@
       </div>
     </div>
 
-    <div class="mt-8 md:col-span-2 lg:col-span-3 flex flex-col">
+    <div v-if="cityStore.city.steps.length > 0" class="mt-8 md:col-span-2 lg:col-span-3 flex flex-col">
       <h2 class="font-bold text-xl">Overzichtskaart</h2>
       <p class="opacity-80 mb-2">Hier zie je alle gebieden die bij deze quest horen</p>
 
@@ -85,6 +85,10 @@
           ></l-marker>
         </l-map>
       </div>
+    </div>
+
+    <div v-else class="rounded border border-orange-600 bg-opacity-10 bg-orange-800 p-4 md:col-span-2 lg:col-span-3">
+      Deze quest heeft geen stappen
     </div>
   </div>
 

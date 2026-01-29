@@ -56,8 +56,9 @@
             v-else-if="cityStore.step.collection === 'step_question'"></QuestionComponent>
         <div v-else>ONBEKENDE STAPTYPE</div>
       </div>
-      <div v-else>
-        Geen stap ingesteld
+
+      <div v-else class="rounded border border-orange-600 bg-opacity-10 bg-orange-800 p-4 m-4">
+        Geen step ingesteld, deze step heeft {{ cityStore.city.steps.length }} stappen.
       </div>
 
       <button

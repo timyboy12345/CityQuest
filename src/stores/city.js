@@ -26,7 +26,11 @@ export const useCityStore = defineStore('city', () => {
 
     function checkResumeStep() {
         // if (confirm('Wil je doorgaan waar je was gebleven')) {
+        if (localStorage.getItem(`step-number-${city.value.id}`)) {
             stepNumber.value = parseInt(localStorage.getItem(`step-number-${city.value.id}`));
+        } else {
+            stepNumber.value = -1;
+        }
         // } else {
         //     stepNumber.value = intro.value.steps.length * -1;
         //     localStorage.setItem(`step-number-${city.value.id}`, stepNumber.value);
@@ -51,6 +55,9 @@ export const useCityStore = defineStore('city', () => {
 
         if (localStorage.getItem(keyName)) {
             stepNumber.value = parseInt(localStorage.getItem(keyName));
+        } else {
+            stepNumber.value = -1;
+            console.log("NO STEP NUMBER FOUND IN STORAGE")
         }
     }
 
