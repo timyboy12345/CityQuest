@@ -59,7 +59,6 @@ const price = computed(() => quest.value ? (Math.round(quest.value.price * 100) 
 <template>
   <div class="flex flex-col">
     <div class="m-4 sm:mx-auto sm:w-96">
-
       <RouterLink class="text-xs mb-2 block underline hover:no-underline opacity-80" to="/shop">
         Terug naar het overzicht
       </RouterLink>

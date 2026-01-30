@@ -78,7 +78,7 @@
 
         <button
             type="button"
-            class="rounded-full p-2 fixed left-4 bottom-4 md:left-6 md:bottom-6 lg:left-8 lg:bottom-8 bg-indigo-500 hover:bg-indigo-600 transition duration-100"
+            class="rounded-full cursor-pointer p-2 fixed left-4 bottom-4 md:left-6 md:bottom-6 lg:left-8 lg:bottom-8 bg-indigo-500 hover:bg-indigo-600 transition duration-100"
             @click="showHelp = true">
           <svg
               xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -98,17 +98,17 @@
               @click="() => {showHelp = false; showHints = false}"/>
           <div class="m-4 flex flex-col gap-y-4">
             <div class="overflow-hidden flex flex-col divide-y divide-gray-200 z-50 bg-white rounded text-gray-800">
-              <button class="py-2 px-4 hover:bg-gray-200 transition duration-100">Contact opnemen</button>
+              <button class="py-2 px-4 cursor-pointer hover:bg-gray-200 transition duration-100">Contact opnemen</button>
               <RouterLink
                   :to="`/city/${quest.id}/summary`"
-                  class="py-2 px-4 hover:bg-gray-200 transition duration-100 text-center">Route Bekijken
+                  class="py-2 px-4 cursor-pointer hover:bg-gray-200 transition duration-100 text-center">Route Bekijken
               </RouterLink>
               <button
                   v-if="step && step.hints"
-                  class="py-2 px-4 hover:bg-gray-200 transition duration-100" @click="showHints = !showHints">Hints
+                  class="py-2 px-4 cursor-pointer hover:bg-gray-200 transition duration-100" @click="showHints = !showHints">Hints
                 {{ showHints ? "Verbergen" : "Tonen" }}
               </button>
-              <button class="py-2 px-4 hover:bg-gray-200 transition duration-100" @click="devMode = !devMode">Devmodes
+              <button class="py-2 px-4 cursor-pointer hover:bg-gray-200 transition duration-100" @click="devMode = !devMode">Devmodes
                 {{ devMode ? "Uitzetten" : "Aanzetten" }}
               </button>
               <RouterLink :to="`/`" class="py-2 px-4 hover:bg-gray-200 transition duration-100 text-center">Home
@@ -233,6 +233,11 @@ const {
     })
         .then((trips) => trips[0])
 );
+
+useHead({
+  title: quest ? quest.value.name : null,
+  meta: []
+})
 
 const supportsGeoLocation = ref(false);
 onMounted(() => {

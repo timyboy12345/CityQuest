@@ -35,7 +35,7 @@
         </RouterLink>
 
         <button
-            class="text-center py-2 px-4 bg-indigo-500 hover:bg-indigo-600 transition duration-100 rounded"
+            class="text-center cursor-pointer py-2 px-4 bg-indigo-500 hover:bg-indigo-600 transition duration-100 rounded"
             type="button" @click="logout">
           Uitloggen
         </button>
