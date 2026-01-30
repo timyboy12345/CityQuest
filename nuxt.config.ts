@@ -5,12 +5,12 @@ export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
     devtools: {enabled: true},
     modules: [
-      '@nuxt/eslint',
-      '@nuxt/fonts',
-      '@nuxt/icon',
-      'nuxt-directus',
-      '@pinia/nuxt',
-      '@nuxtjs/leaflet',
+        '@nuxt/eslint',
+        '@nuxt/fonts',
+        '@nuxt/icon',
+        'nuxt-directus',
+        '@pinia/nuxt',
+        '@nuxtjs/leaflet',
     ],
 
     // Directus configuration
@@ -25,6 +25,10 @@ export default defineNuxtConfig({
     vite: {
         plugins: [tailwindcss()],
     },
+
+    ignore: [
+        'pages/auth/register.vue',
+    ],
 
     css: ["./app/tailwind.css"],
 })

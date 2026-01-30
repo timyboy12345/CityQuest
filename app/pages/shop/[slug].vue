@@ -113,7 +113,7 @@ const price = computed(() => quest.value ? (Math.round(quest.value.price * 100) 
           <GeneralCard v-else>
             Je bent niet ingelogd, dus je kan geen trips kopen.
 
-            <RouterLink :to="`/login?next=/shop/${route.params.id}`" class="underline hover:no-underline">
+            <RouterLink :to="`/auth/login?next=/shop/${route.params.id}`" class="underline hover:no-underline">
               Log hier in
             </RouterLink>
           </GeneralCard>

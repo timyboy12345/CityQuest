@@ -75,12 +75,12 @@
 
       <div class="grid md:col-span-2 md:grid-cols-3 gap-4">
         <RouterLink
-            to="/login"
+            to="/auth/login"
             class="text-center py-2 px-4 bg-indigo-500 hover:bg-indigo-600 transition duration-100 rounded">
           Log hier in
         </RouterLink>
         <RouterLink
-            to="/register"
+            to="/auth/register"
             class="text-center py-2 px-4 bg-indigo-500 hover:bg-indigo-600 transition duration-100 rounded">
           Maak hier een account aan
         </RouterLink>
