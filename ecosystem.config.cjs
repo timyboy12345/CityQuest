@@ -1,7 +1,7 @@
 module.exports = {
     apps: [
         {
-            name: 'Learner',
+            name: 'cityquest-app',
             port: '3014',
             exec_mode: 'cluster',
             instances: 'max',
