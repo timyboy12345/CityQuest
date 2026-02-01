@@ -50,7 +50,8 @@
       <div v-else-if="quest" class="w-full h-full">
         <div v-if="step">
           <MapComponent
-              v-if="step.collection === 'step_poly'" :quest="quest"
+              v-if="step.collection === 'step_poly'"
+              :quest="quest"
               :step="step"
               :center="center"
               :zoom="zoom"
@@ -59,13 +60,23 @@
               @next-step="currentStep++"
           />
           <TextComponent
-              v-else-if="step.collection === 'step_text'" :quest="quest"
+              v-else-if="step.collection === 'step_text'"
+              :quest="quest"
               :step="step"
-              @next-step="currentStep++"/>
+              @next-step="currentStep++"
+          />
           <QuestionComponent
-              v-else-if="step.collection === 'step_question'" :quest="quest"
+              v-else-if="step.collection === 'step_question'"
+              :quest="quest"
               :step="step"
-              @next-step="currentStep++"/>
+              @next-step="currentStep++"
+          />
+          <OpenQuestionComponent
+              v-else-if="step.collection === 'step_open_question'"
+              :quest="quest"
+              :step="step"
+              @next-step="currentStep++"
+          />
           <div v-else>ONBEKENDE STAPTYPE</div>
         </div>
 
@@ -98,17 +109,20 @@
               @click="() => {showHelp = false; showHints = false}"/>
           <div class="m-4 flex flex-col gap-y-4">
             <div class="overflow-hidden flex flex-col divide-y divide-gray-200 z-50 bg-white rounded text-gray-800">
-              <button class="py-2 px-4 cursor-pointer hover:bg-gray-200 transition duration-100">Contact opnemen</button>
+              <button class="py-2 px-4 cursor-pointer hover:bg-gray-200 transition duration-100">Contact opnemen
+              </button>
               <RouterLink
                   :to="`/city/${quest.id}/summary`"
                   class="py-2 px-4 cursor-pointer hover:bg-gray-200 transition duration-100 text-center">Route Bekijken
               </RouterLink>
               <button
                   v-if="step && step.hints"
-                  class="py-2 px-4 cursor-pointer hover:bg-gray-200 transition duration-100" @click="showHints = !showHints">Hints
+                  class="py-2 px-4 cursor-pointer hover:bg-gray-200 transition duration-100"
+                  @click="showHints = !showHints">Hints
                 {{ showHints ? "Verbergen" : "Tonen" }}
               </button>
-              <button class="py-2 px-4 cursor-pointer hover:bg-gray-200 transition duration-100" @click="devMode = !devMode">Devmodes
+              <button class="py-2 px-4 cursor-pointer hover:bg-gray-200 transition duration-100"
+                      @click="devMode = !devMode">Devmodes
                 {{ devMode ? "Uitzetten" : "Aanzetten" }}
               </button>
               <RouterLink :to="`/`" class="py-2 px-4 hover:bg-gray-200 transition duration-100 text-center">Home
@@ -129,7 +143,7 @@
 
       <button
           v-if="devMode && (hasGeoLocation === 1 || currentStep < 0) && currentStep !== intro.length * -1"
-          class="hover:underline absolute left-4 bottom-4 text-xs opacity-50"
+          class="hover:underline fixed left-4 top-4 text-xs opacity-50"
           type="button"
           @click="currentStep--">
         Stap Terug
@@ -137,7 +151,7 @@
 
       <button
           v-if="devMode && (hasGeoLocation === 1 || currentStep < 0)"
-          class="hover:underline absolute right-4 bottom-4 text-xs opacity-50"
+          class="hover:underline fixed right-4 top-4 text-xs opacity-50"
           type="button"
           @click="currentStep++">
         Volgende Stap
@@ -158,6 +172,7 @@ import MapComponent from "@/components/quest-components/MapComponent.vue";
 import TextComponent from "@/components/quest-components/TextComponent.vue";
 import QuestionComponent from "@/components/quest-components/QuestionComponent.vue";
 import FinishComponent from "@/components/quest-components/FinishComponent.vue";
+import OpenQuestionComponent from "~/components/quest-components/OpenQuestionComponent.vue";
 
 const user = useDirectusUser();
 const route = useRoute();

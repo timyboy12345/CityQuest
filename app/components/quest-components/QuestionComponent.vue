@@ -40,7 +40,7 @@ function handleAnswerClick(answer) {
       <button
           v-for="answer in step.item.answers"
           :key="answer"
-          class="rounded bg-indigo-500 hover:bg-indigo-600 transition duration-100 py-2 px-4"
+          class="rounded bg-indigo-500 cursor-pointer hover:bg-indigo-600 transition duration-100 py-2 px-4"
           type="button"
           :class="{'opacity-50 bg-red-800 hover:bg-red-900': wrongAnswers.includes(answer.text)}"
           :disabled="wrongAnswers.includes(answer.text)"
