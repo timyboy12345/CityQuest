@@ -20,6 +20,7 @@ function handleAnswer() {
 function checkAnswer(answer) {
   processing.value = false;
 
+  // TODO: Handle non-case-sensitive and alfanumeric checkboxes
   if (step.item.answers.includes(answer)) {
     if (step.item.right_explanation) {
       showRightExplanation.value = true;
@@ -69,7 +70,7 @@ function checkAnswer(answer) {
           {{ step.item.right_explanation }}
 
           <button
-              class="block mt-4 rounded bg-indigo-500 hover:bg-indigo-600 transition duration-100 text-white py-2 px-4"
+              class="cursor-pointer block mt-4 rounded bg-indigo-500 hover:bg-indigo-600 transition duration-100 text-white py-2 px-4"
               type="button" @click="$emit('nextStep')">
             Ga door
           </button>

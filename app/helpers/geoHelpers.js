@@ -28,6 +28,10 @@ export function pointInPoly(point, polygon) {
 }
 
 export function findPolyCenter(poly) {
+    if (!poly || poly.length === 0) return [0, 0];
+    if (poly.length === 1) return [poly[0][0], poly[0][1]];
+    if (poly.length === 2) return [(poly[0][0] + poly[1][0]) / 2, (poly[0][1] + poly[1][1]) / 2];
+
     function Point(x, y) {
         this.x = x;
         this.y = y;

@@ -20,7 +20,7 @@ const markdown = new MarkdownIt();
 
     <button
         type="button"
-        class="fixed right-4 md:right-6 lg:right-8 bottom-4 md:bottom-6 lg:bottom-8 py-2 px-4 rounded bg-indigo-500 transition duration-100 hover:bg-indigo-600"
+        class="fixed cursor-pointer right-4 md:right-6 lg:right-8 bottom-4 md:bottom-6 lg:bottom-8 py-2 px-4 rounded bg-indigo-500 transition duration-100 hover:bg-indigo-600"
         @click="$emit('nextStep')">
       Volgende stap
     </button>

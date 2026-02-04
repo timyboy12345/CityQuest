@@ -21,7 +21,7 @@
             <div class="opacity-80 text-center">Om dit spel te spelen hebben we je locatiegegevens nodig.</div>
             <button
                 v-if="!pendingLocation"
-                class="text-zinc-100 mt-8 py-2 px-4 rounded bg-indigo-500 hover:bg-indigo-600 transition-colors duration-100"
+                class="text-zinc-100 mt-8 py-2 px-4 rounded bg-indigo-500 hover:bg-indigo-600 transition-colors duration-100 cursor-pointer"
                 @click="askGeoPermission">
               Geef toestemming
             </button>
@@ -34,7 +34,7 @@
 
           <button
               v-if="!pendingLocation"
-              class="mt-8 py-1 px-2 rounded bg-indigo-500 hover:bg-indigo-600 transition-colors duration-100"
+              class="mt-8 py-1 px-2 rounded bg-indigo-500 hover:bg-indigo-600 transition-colors duration-100 cursor-pointer"
               @click="askGeoPermission">
             Geef toestemming
           </button>
@@ -57,25 +57,25 @@
               :zoom="zoom"
               :own-location="ownLocation"
               @map-click="handleMapClick($event.lat, $event.lng)"
-              @next-step="currentStep++"
+              @next-step="alterSteps(1)"
           />
           <TextComponent
               v-else-if="step.collection === 'step_text'"
               :quest="quest"
               :step="step"
-              @next-step="currentStep++"
+              @next-step="alterSteps(1)"
           />
           <QuestionComponent
               v-else-if="step.collection === 'step_question'"
               :quest="quest"
               :step="step"
-              @next-step="currentStep++"
+              @next-step="alterSteps(1)"
           />
           <OpenQuestionComponent
               v-else-if="step.collection === 'step_open_question'"
               :quest="quest"
               :step="step"
-              @next-step="currentStep++"
+              @next-step="alterSteps(1)"
           />
           <div v-else>ONBEKENDE STAPTYPE</div>
         </div>
@@ -143,17 +143,17 @@
 
       <button
           v-if="devMode && (hasGeoLocation === 1 || currentStep < 0) && currentStep !== intro.length * -1"
-          class="hover:underline fixed left-4 top-4 text-xs opacity-50"
+          class="cursor-pointer hover:underline fixed left-4 top-4 text-xs opacity-50"
           type="button"
-          @click="currentStep--">
+          @click="alterSteps(-1)">
         Stap Terug
       </button>
 
       <button
           v-if="devMode && (hasGeoLocation === 1 || currentStep < 0)"
-          class="hover:underline fixed right-4 top-4 text-xs opacity-50"
+          class="cursor-pointer hover:underline fixed right-4 top-4 text-xs opacity-50"
           type="button"
-          @click="currentStep++">
+          @click="alterSteps(1)">
         Volgende Stap
       </button>
     </div>
@@ -177,7 +177,7 @@ import OpenQuestionComponent from "~/components/quest-components/OpenQuestionCom
 const user = useDirectusUser();
 const route = useRoute();
 
-const {getItemById, getSingletonItem, getItems} = useDirectusItems();
+const {getItemById, getSingletonItem, getItems, updateItem} = useDirectusItems();
 
 // TODO: Change this
 const currentStep = ref(0);
@@ -227,7 +227,6 @@ const {
       },
     })
         .then((intro) => {
-          currentStep.value = intro.steps.length * -1;
           return intro.steps;
         })
 );
@@ -246,8 +245,24 @@ const {
         limit: 1,
       },
     })
-        .then((trips) => trips[0])
+        .then((trips) => {
+          return trips[0]
+        })
 );
+
+watch(
+    [() => tripPending.value, () => questPending.value, () => introPending.value],
+    ([newTripPending, newQuestPending, newIntroPending]) => {
+      if (!newTripPending && !newQuestPending && !newIntroPending) {
+        if (trip.value) {
+          console.log(`Status of trip: ${trip.value.status} / ${trip.value.step}`);
+          currentStep.value = trip.value.step ? trip.value.step : (intro.value.length * -1);
+        }
+      }
+    },
+    {immediate: true, once: true}
+);
+
 
 useHead({
   title: quest ? quest.value.name : null,
@@ -322,8 +337,9 @@ function updateLocation(position: GeolocationPosition) {
       const locs = step.value.item.polygon.coordinates[0].map((l) => [l[1], l[0]])
       const inPoly = pointInPoly([lat, lng], locs);
       console.log(inPoly);
+
       if (inPoly) {
-        // cityStore.nextStep();
+        alterSteps(1);
       }
     }
   }
@@ -338,6 +354,29 @@ function handleMapClick(lat, lng) {
   console.log(inPoly);
 }
 
+function alterSteps(amount = 0) {
+  currentStep.value += amount;
+
+  // Don't save if users have not passed step 1
+  if (currentStep.value < 1) return
+
+  const data =  {
+    step: currentStep.value
+  }
+
+  if (currentStep.value === 1) {
+    data.date_started = new Date().toISOString();
+    trip.value.date_started = Date().toISOString();
+  }
+
+  updateItem({
+    collection: 'trip',
+    id: trip.value.id,
+    item: data
+  })
+      .then((r) => console.log(r))
+      .catch((e) => console.error(e))
+}
 </script>
 
 <style>
