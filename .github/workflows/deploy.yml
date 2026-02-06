@@ -70,6 +70,6 @@ jobs:
       - name: Copy Nuxt config file 🖨
         run: scp -r nuxt.config.ts ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/app.storywalks.nl/nuxt.config.js
       - name: Install dependencies on production server ⏱
-        run: ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} pnpm install --prefix /var/www/app.storywalks.nl
+        run: ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "/root/.local/share/pnpm/pnpm install --prefix /var/www/app.storywalks.nl"
       - name: Restart Storywalks PM2 Server 🏁
         run: ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} pm2 reload cityquest-app
