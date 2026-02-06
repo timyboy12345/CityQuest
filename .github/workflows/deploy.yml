@@ -68,7 +68,7 @@ jobs:
       - name: Publish files 🚀
         run: scp -r .nuxt/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/app.storywalks.nl/.nuxt
       - name: Copy Nuxt config file 🖨
-        run: scp -r nuxt.config.js ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/app.storywalks.nl/nuxt.config.js
+        run: scp -r nuxt.config.ts ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/app.storywalks.nl/nuxt.config.js
       - name: Install dependencies on production server ⏱
         run: ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} pnpm install --prefix /var/www/app.storywalks.nl
       - name: Restart Storywalks PM2 Server 🏁
