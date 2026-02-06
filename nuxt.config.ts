@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import tailwindcss from "@tailwindcss/vite";
+import pkg from './package.json'
 
 export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
@@ -16,8 +17,9 @@ export default defineNuxtConfig({
     // Directus configuration
     runtimeConfig: {
         public: {
-            url: 'https://your-directus-instance.com OR NUXT_PUBLIC_DIRECTUS_URL'
-        }
+            url: 'https://your-directus-instance.com OR NUXT_PUBLIC_DIRECTUS_URL',
+            version: pkg.version,
+        },
     },
 
     directus: {autoFetch: true, autoRefresh: true},

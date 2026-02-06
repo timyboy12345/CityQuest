@@ -18,8 +18,8 @@ function submitLogin() {
         router.push(route.query.next ?? '/');
       })
       .catch((e) => {
-        console.error(e);
-        error.value = e.errors[0].message
+        console.error(e.data);
+        error.value = e.data.errors[0].message
       })
       .then(() => submitting.value = false);
 }
@@ -38,6 +38,11 @@ const password = ref('')
 
     <h1 class="text-2xl font-bold">Inloggen</h1>
     <p class="opacity-60">Log hier in om toegang te krijgen tot al jouw avonturen en nieuwe avonturen aan te gaan.</p>
+
+    <div v-if="route.query.registered" class="mt-8 border border-indigo-500 p-2 rounded ring-4 ring-indigo-500/40">
+      <div class="font-bold">Je account is aangemaakt</div>
+      <div class="text-sm">Log hieronder in met de gegevens die je net hebt doorgegeven</div>
+    </div>
 
     <form v-if="!user" class="mt-8" @submit.prevent="submitLogin">
       <div class="grid gap-4">

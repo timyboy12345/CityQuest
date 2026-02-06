@@ -1,25 +1,7 @@
 <script setup>
 const user = useDirectusUser();
-
-function submitRegister() {
-//   if (submitting.value) {
-//     return;
-//   }
-//
-//   submitting.value = true;
-//   authStore.register(email.value, password.value, firstName.value, lastName.value)
-//       .then((r) => {
-//         error.value = null;
-//         console.log(r)
-//         // authStore.init()
-//         router.push('/auth/login');
-//       })
-//       .catch((e) => {
-//         console.error(e);
-//         error.value = e.errors[0].message
-//       })
-//       .then(() => submitting.value = false);
-}
+const url = useDirectusUrl()
+const router = useRouter();
 
 const error = ref()
 const submitting = ref(false)
@@ -27,10 +9,54 @@ const email = ref('')
 const password = ref('')
 const firstName = ref('')
 const lastName = ref('')
+
+async function submitRegister() {
+  if (submitting.value) {
+    return;
+  }
+
+  submitting.value = true;
+
+  try {
+    const response = await fetch(url + '/users/register',
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email.value,
+            password: password.value,
+            first_name: firstName.value,
+            last_name: lastName.value,
+          }),
+          method: 'POST'
+        })
+
+
+    if (!response.ok) {
+      const result = await response.json();
+      console.log(result);
+
+      error.value = result.errors[0].message
+      submitting.value = false;
+      return
+    }
+
+    error.value = null;
+    router.push('/auth/login?registered=true');
+  } catch (error) {
+    console.log(error)
+    error.value = error.errors[0]
+  }
+}
 </script>
 
 <template>
-  <div class="m-4 sm:w-96 sm:mx-auto mt-8">
+  <div class="m-4 sm:w-96 sm:mx-auto">
+    <RouterLink class="text-xs mb-2 block underline hover:no-underline opacity-80" to="/">
+      Terug naar de homepagina
+    </RouterLink>
+
     <h1 class="text-2xl font-bold">Registreren</h1>
     <p class="opacity-60">Maak hier je account aan en krijg toegang tot alle avonturen.</p>
     <form v-if="!user" class="mt-8" @submit.prevent="submitRegister">
@@ -43,7 +69,8 @@ const lastName = ref('')
         <div class="flex flex-col">
           <label for="password">Wachtwoord</label>
           <input id="password" v-model="password" name="password" type="password" class="rounded text-gray-800">
-          <div class="text-xs opacity-70">Gebruik bij voorkeur een wachtwoord wat je nog nergens anders hebt gebruikt.</div>
+          <div class="text-xs opacity-70">Gebruik bij voorkeur een wachtwoord wat je nog nergens anders hebt gebruikt.
+          </div>
         </div>
         <div class="flex flex-col">
           <label for="firstName">Voornaam</label>
@@ -56,15 +83,18 @@ const lastName = ref('')
         </div>
       </div>
 
+      <div
+          v-if="error"
+          class="text-zinc-100 border border-red-500 bg-opacity-10 bg-red-500 mt-4 text-sm rounded py-2 px-4">
+        {{ error }}
+      </div>
+
       <div class="flex gap-x-4 justify-end items-center mt-4">
-        <div v-if="error" class="text-red-500 rounded outline outline-1 py-2 px-4">
-          {{ error }}
-        </div>
         <button
-type="submit"
-                :disabled="submitting"
-                :class="{'opacity-50': submitting}"
-                class="float-right px-4 py-2 bg-indigo-500 hover:bg-indigo-600 transition duration-100 rounded">
+            type="submit"
+            :disabled="submitting"
+            :class="{'opacity-50': submitting}"
+            class="cursor-pointer float-right px-4 py-2 bg-indigo-500 hover:bg-indigo-600 transition duration-100 rounded">
           Account aanmaken
         </button>
       </div>
@@ -74,8 +104,6 @@ type="submit"
 
       <RouterLink to="/" class="underline mt-4">Terug naar de homepagina</RouterLink>
     </div>
-
-    <RouterLink to="/" class="underline hover:no-underline block mt-4">Terug naar de homepagina</RouterLink>
   </div>
 </template>
 

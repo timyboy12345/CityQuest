@@ -1,7 +1,7 @@
 {
   "name": "cityquest",
   "type": "module",
-  "version": "v1.0.5",
+  "version": "v1.0.6",
   "private": true,
   "scripts": {
     "build": "nuxt build",
