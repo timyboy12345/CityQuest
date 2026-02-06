@@ -26,10 +26,6 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Install dependencies 👨🏻‍💻
         run: pnpm i
 
@@ -47,9 +43,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 22
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
       - name: Install PNPM packages locally 🧑🏻‍💻
         run: pnpm i
       - name: Build 🧱
