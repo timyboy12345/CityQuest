@@ -54,6 +54,10 @@ async function buy() {
 }
 
 const price = computed(() => quest.value ? (Math.round(quest.value.price * 100) / 100).toFixed(2) : "???")
+
+useHead({
+  title: quest.value ? `${quest.value.name} - Nieuwe Quests Kopen` : "Nieuwe Quests Kopen",
+})
 </script>
 
 <template>

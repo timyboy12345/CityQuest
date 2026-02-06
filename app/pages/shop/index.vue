@@ -13,6 +13,10 @@ const {
       params: {},
     })
 );
+
+useHead({
+  title: 'Nieuwe Quests kopen',
+})
 </script>
 
 <template>
