@@ -20,8 +20,18 @@ function handleAnswer() {
 function checkAnswer(answer) {
   processing.value = false;
 
-  // TODO: Handle non-case-sensitive and alfanumeric checkboxes
-  if (step.item.answers.includes(answer)) {
+  let ans = answer;
+
+  if (!step.item.case_sensitive) ans = ans.toLowerCase();
+  if (step.item.only_alpha_numeric) ans = ans.replace(/[^a-z0-9]/gi, '');
+
+  const answers = step.item.answers.map((a) => {
+    if (!step.item.case_sensitive) a = a.toLowerCase();
+    if (step.item.only_alpha_numeric) a = a.replace(/[^a-z0-9]/gi, '');
+    return a;
+  });
+
+  if (answers.includes(ans)) {
     if (step.item.right_explanation) {
       showRightExplanation.value = true;
     } else {

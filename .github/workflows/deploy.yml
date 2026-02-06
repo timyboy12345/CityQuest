@@ -68,6 +68,6 @@ jobs:
       - name: Install dependencies on production server ⏱
         run: ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "/root/.local/share/pnpm/pnpm install --prefix /var/www/app.storywalks.nl"
       - name: Run build command
-        run: ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "/root/.local/share/pnpm/pnpm run build --prefix /var/www/app.storywalks.nl"
+        run: ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /var/www/app.storywalks.nl && /root/.local/share/pnpm/pnpm run build"
       - name: Restart Storywalks PM2 Server 🏁
         run: ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} pm2 reload cityquest-app

@@ -29,6 +29,15 @@
           Antwoord: {{ step.item.answers.filter((a) => a.right).map((a) => a.text).join(", ") }}
         </div>
       </div>
+      <div v-if="step.collection === 'step_open_question'" class="p-4">
+        <h2 class="font-bold flex items-center">
+          {{ step.item.title }}
+          <span class="rounded ml-2 bg-indigo-500 py-0.5 px-1 text-xs text-white font-medium">Vraag</span>
+        </h2>
+        <div class="prose-sm" v-html="markdown.render(step.item.content)"/>
+
+        <div class="text-sm mt-4">Juiste antwoorden: {{ step.item.answers.join(', ') }}</div>
+      </div>
       <div v-else-if="step.collection === 'step_poly'" class="relative h-full overflow-hidden rounded-b">
         <h2 class="p-4 font-bold flex items-center">
           {{ step.item.title }}
